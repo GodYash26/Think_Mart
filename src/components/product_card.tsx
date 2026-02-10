@@ -81,7 +81,7 @@ export function ProductCard({
 
             <CardContent className="p-0">
                 {/* Product Image */}
-                <div className="relative flex items-center justify-center h-48">
+                <div className="relative flex items-center justify-center h-36 pt-2">
                     <img
                         src={image}
                         alt={name}
@@ -90,7 +90,7 @@ export function ProductCard({
                 </div>
 
                 {/* Product Details */}
-                <div className="p-4">
+                <div className="px-4 py-2">
                     <h3 className="text-base font-normal text-gray-900 mb-2">{name}</h3>
 
                     {/* Price Section */}

@@ -7,6 +7,7 @@ import StoreLocation from '@/components/location/location'
 import { Hero } from '@/pages/hero/hero'
 import { PopularCategories } from '@/pages/popular_categories/popular_categories'
 import { OfferProducts } from '@/pages/offer_products/offer_products'
+import { FeatureProducts } from '@/pages/feature_products/feature_products'
 
 export const AppLayout = () => {
     return (
@@ -19,6 +20,7 @@ export const AppLayout = () => {
             </main>
             <PopularCategories />
             <OfferProducts />
+            <FeatureProducts />
             <StoreLocation />
             <FAQ />
             <Footer />

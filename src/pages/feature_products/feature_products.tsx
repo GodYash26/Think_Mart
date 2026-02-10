@@ -55,7 +55,7 @@ const products = [
   },
 ];
 
-export const OfferProducts = () => {
+export const FeatureProducts = () => {
   const handleAddToCart = (productId: number, quantity: number) => {
     console.log(`Added ${quantity} of product ${productId} to cart`);
   };
@@ -65,9 +65,9 @@ export const OfferProducts = () => {
   };
 
   return (
-    <section className="w-full py-12" id="offer-products">
+    <section className="w-full py-12" id="feature-products">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-8">Offer Products</h2>
+        <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-8">Feature Products</h2>
         
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-6">
           {products.map((product) => (
