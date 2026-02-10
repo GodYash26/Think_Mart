@@ -5,7 +5,7 @@ import HeroImg3 from "@/assets/hero3.png";
 export const Hero = () => {
   return (
     <section className="w-full py-2" id="hero">
-      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+      <div className="mx-auto max-w-7xl px-4 sm:px-6 ">
         <div className="relative h-130 rounded-2xl overflow-hidden">
           
           {/* Full-width background image */}
