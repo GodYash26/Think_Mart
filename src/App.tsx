@@ -1,12 +1,8 @@
 
+import { AppLayout } from './layout/app.layout'
 
 function App() {
-
-  return (
-    <div>
-      <h1>Ganesh Thapa</h1>
-    </div>
-  )
+  return <AppLayout />
 }
 
 export default App
