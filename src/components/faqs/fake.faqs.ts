@@ -24,19 +24,4 @@ export const faqs = [
     q: "How can I track my order?",
     a: "Once your order is confirmed, you'll receive a tracking link via email and SMS. You can also track your order in real-time through your account dashboard."
   },
-  {
-    id:6,
-    q: "What payment methods do you accept?",
-    a: "We accept all major credit/debit cards, UPI, net banking, and digital wallets. Cash on delivery is also available for orders above ₹500."
-  },
-  {
-    id:7,
-    q: "Is there a minimum order value?",
-    a: "Yes, the minimum order value is ₹200. Free delivery is available on orders above ₹500."
-  },
-  {
-    id:8,
-    q: "Can I schedule a delivery for a specific time?",
-    a: "Yes, you can select your preferred delivery slot during checkout. We offer 2-hour delivery windows throughout the day."
-  }
 ];

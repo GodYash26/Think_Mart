@@ -10,7 +10,7 @@ const Navbar = () => {
     const [categoriesOpen, setCategoriesOpen] = useState(false);
 
     return (
-        <nav className="w-full bg-white border-b border-gray-200 sticky top-16 z-40">
+        <nav className="w-full bg-white border-b border-gray-200 sticky top-20 z-40">
             <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
                 <div className="flex items-center justify-between py-3 w-full">
                     {/* Desktop Navigation */}
@@ -74,7 +74,7 @@ const Navbar = () => {
                         <div className="mb-2">
                             <Button
                                 onClick={() => setCategoriesOpen(!categoriesOpen)}
-                                className="w-full flex items-center justify-between px-4 py-3 text-sm font-medium text-gray-700 hover:bg-gray-50 hover:text-brand-green transition-colors"
+                                className="w-full flex items-center justify-between px-4 py-3 text-sm font-medium text-gray-700 bg-gray-10"
                             >
                                 All Categories
                                 <ChevronDown
