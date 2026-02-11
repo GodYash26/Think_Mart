@@ -25,7 +25,7 @@ const Navbar = () => {
                     <div className="hidden lg:flex items-center gap-8 flex-1">
                         {/* All Categories Dropdown */}
                         <div className="relative group">
-                            <Button className="flex items-center gap-2 text-sm font-medium bg-white text-gray-700 hover:text-brand-green transition-colors py-2">
+                            <Button className="flex items-center gap-2 text-sm font-medium bg-white hover:bg-white text-gray-700 hover:text-brand-green transition-colors py-2">
                                 All Categories
                                 <ChevronDown size={16} className="group-hover:rotate-180 transition-transform" />
                             </Button>
@@ -34,7 +34,7 @@ const Navbar = () => {
                                     <a
                                         key={category}
                                         href={`#${category.toLowerCase()}`}
-                                        className="block px-4 py-2.5 text-sm text-gray-700 hover:bg-gray-50 hover:text-brand-green transition-colors first:rounded-t-md last:rounded-b-md"
+                                        className="block px-4 py-2.5 text-sm text-gray-700 hover:text-brand-green transition-colors first:rounded-t-md last:rounded-b-md"
                                     >
                                         {category}
                                     </a>

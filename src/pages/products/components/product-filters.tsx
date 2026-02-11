@@ -76,7 +76,7 @@ export function ProductFilters({
                 <CardHeader className="pb-3">
                     <Button
                         onClick={() => toggleSection('categories')}
-                        className="flex items-center justify-between w-full "
+                        className="flex items-center justify-between w-full bg-white hover:bg-white text-gray-700"
                     >
                         <CardTitle className="text-base  font-semibold">Product Categories</CardTitle>
                         <ChevronDown
@@ -104,7 +104,7 @@ export function ProductFilters({
                 <CardHeader className="pb-3">
                     <Button
                         onClick={() => toggleSection('price')}
-                        className="flex items-center justify-between w-full"
+                        className="flex items-center justify-between w-full bg-white hover:bg-white text-gray-700"
                     >
                         <CardTitle className="text-base font-semibold">Price</CardTitle>
                         <ChevronDown
@@ -149,7 +149,7 @@ export function ProductFilters({
                 <CardHeader className="pb-3">
                     <Button
                         onClick={() => toggleSection('rating')}
-                        className="flex items-center justify-between w-full"
+                        className="flex items-center justify-between w-full bg-white hover:bg-white text-gray-700"
                     >
                         <CardTitle className="text-base font-semibold">Rating</CardTitle>
                         <ChevronDown

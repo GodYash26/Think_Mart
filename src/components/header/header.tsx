@@ -1,5 +1,6 @@
 
 
+import React from "react";
 import SearchBar from "./search";
 import logo from "../../assets/logo.png";
 import { Button } from "../ui/button";
@@ -10,7 +11,7 @@ import {
     DropdownMenuTrigger,
     DropdownMenuItem,
 } from "../ui/dropdown-menu";
-import React from "react";
+import { Link } from "react-router-dom";
 
 const Header: React.FC = () => {
 
@@ -22,7 +23,9 @@ const Header: React.FC = () => {
         <header className="w-full bg-white shadow-xs sticky top-0 z-50">
             <div className="mx-auto flex w-full max-w-7xl flex-col gap-4 px-4 py-3 sm:flex-row sm:items-center sm:justify-between sm:px-6 lg:px-8">
                 <div className="hidden lg:flex shrink-0 items-center text-2xl font-bold text-brand-green">
-                    <img src={logo} alt="Logo" className="h-12 w-12 sm:h-14 sm:w-14" />
+                    <Link to="/">
+                        <img src={logo} alt="Logo" className="h-12 w-12 sm:h-14 sm:w-14" />
+                    </Link>
                 </div>
                 <div className="flex-1 flex justify-center px-0 sm:px-4">
                     <SearchBar />
