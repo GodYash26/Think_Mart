@@ -134,6 +134,22 @@ function DragHandle({ id }: { id: number }) {
   )
 }
 
+// Component for handling indeterminate checkbox state
+function IndeterminateCheckbox({
+  indeterminate,
+  ...props
+}: { indeterminate?: boolean } & React.InputHTMLAttributes<HTMLInputElement>) {
+  const ref = React.useRef<HTMLInputElement>(null)
+
+  React.useEffect(() => {
+    if (ref.current) {
+      ref.current.indeterminate = indeterminate ?? false
+    }
+  }, [indeterminate])
+
+  return <Checkbox ref={ref} {...props} />
+}
+
 const columns: ColumnDef<z.infer<typeof schema>>[] = [
   {
     id: "drag",
@@ -144,12 +160,10 @@ const columns: ColumnDef<z.infer<typeof schema>>[] = [
     id: "select",
     header: ({ table }) => (
       <div className="flex items-center justify-center">
-        <Checkbox
-          checked={
-            table.getIsAllPageRowsSelected() ||
-            (table.getIsSomePageRowsSelected() && "indeterminate")
-          }
-          onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
+        <IndeterminateCheckbox
+          checked={table.getIsAllPageRowsSelected()}
+          indeterminate={table.getIsSomePageRowsSelected() && !table.getIsAllPageRowsSelected()}
+          onChange={(e) => table.toggleAllPageRowsSelected(e.target.checked)}
           aria-label="Select all"
         />
       </div>
@@ -158,7 +172,7 @@ const columns: ColumnDef<z.infer<typeof schema>>[] = [
       <div className="flex items-center justify-center">
         <Checkbox
           checked={row.getIsSelected()}
-          onCheckedChange={(value) => row.toggleSelected(!!value)}
+          onChange={(e) => row.toggleSelected(e.target.checked)}
           aria-label="Select row"
         />
       </div>
