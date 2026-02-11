@@ -9,7 +9,6 @@ import {
   IconFileWord,
   IconFolder,
   IconHelp,
-  IconInnerShadowTop,
   IconListDetails,
   IconReport,
   IconSearch,
@@ -30,6 +29,7 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
 } from "@/components/ui/sidebar"
+import logo from "@/assets/logo.png"
 
 const data = {
   user: {
@@ -39,13 +39,13 @@ const data = {
   },
   navMain: [
     {
-      title: "Dashboard",
-      url: "#",
+      title: "Add Product",
+      url: "/admin/add-product",
       icon: IconDashboard,
     },
     {
-      title: "Lifecycle",
-      url: "#",
+      title: "Add Category",
+      url: "/admin/add-category",
       icon: IconListDetails,
     },
     {
@@ -159,8 +159,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
               className="data-[slot=sidebar-menu-button]:p-1.5!"
             >
               <a href="#">
-                <IconInnerShadowTop className="size-5!" />
-                <span className="text-base font-semibold">Acme Inc.</span>
+                <img src={logo} alt="Logo" className="h-10 w-10 pl-1"  />
               </a>
             </SidebarMenuButton>
           </SidebarMenuItem>
