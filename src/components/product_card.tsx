@@ -10,7 +10,7 @@ export interface ProductCardProps {
     image: string;
     originalPrice: number;
     discountedPrice: number;
-    discountPercentage: number;
+    discountPercentage?: number;
     deliveryCharge: number;
     unit?: string;
     onAddToCart?: (quantity: number) => void;
@@ -61,11 +61,13 @@ export function ProductCard({
     return (
         <Card className="relative overflow-hidden border-gray-200 hover:shadow-md transition-shadow duration-300 group">
             {/* Discount Badge */}
-            <Badge
-                className="absolute top-3 left-3 z-10 bg-green-600 hover:bg-green-600 text-white font-medium px-2.5 py-1 text-xs"
-            >
-                {discountPercentage}% Off
-            </Badge>
+            {discountPercentage !== undefined && discountPercentage > 0 && (
+                <Badge
+                    className="absolute top-3 left-3 z-10 bg-green-600 hover:bg-green-600 text-white font-medium px-2.5 py-1 text-xs"
+                >
+                    {discountPercentage}% Off
+                </Badge>
+            )}
 
             {/* Favorite Button */}
             <Button
