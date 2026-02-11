@@ -2,6 +2,8 @@
 import Image1 from "@/assets/p1.png";  
 import Image2 from "@/assets/p2.png";
 import Image3 from "@/assets/p3.png";
+import Image4 from "@/assets/img3.png";
+import Image5 from "@/assets/img4.png";
 
 export interface Product {
     id: string;
@@ -31,23 +33,23 @@ export const fakeProducts: Product[] = [
     {
         id: "2",
         name: "Potatoes",
-        image: Image2,
+        image: Image4,
         originalPrice: 3.99,
         discountedPrice: 2.49,
         deliveryCharge: 1.50,
-        category: "Vegetables",
+        category: "Beverages",
         rating: 4.2,
         unit: "/kg",
     },
     {
         id: "3",
-        name: "Radish",
-        image: Image3,
+        name: "Meat",
+        image: Image5,
         originalPrice: 2.99,
         discountedPrice: 1.99,
         discountPercentage: 33,
         deliveryCharge: 1.00,
-        category: "Vegetables",
+        category: "Meat & Fish",
         rating: 3.8,
         unit: "/kg",
     },

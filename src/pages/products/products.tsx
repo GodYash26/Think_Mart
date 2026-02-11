@@ -21,12 +21,10 @@ export function ProductsPage() {
 
     const handleAddToCart = (productId: string, quantity: number) => {
         console.log(`Added ${quantity} of product ${productId} to cart`);
-        // TODO: Implement cart logic here
     };
 
     const handleToggleFavorite = (productId: string, isFavorite: boolean) => {
         console.log(`Product ${productId} favorite status: ${isFavorite}`);
-        // TODO: Implement favorites logic here
     };
 
     // Build active filters list
