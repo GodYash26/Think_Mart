@@ -18,7 +18,6 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const navigate = useNavigate();
   const queryClient = useQueryClient();
 
-  // Fetch user profile on mount
   const {
     data: profileData,
     isLoading,
@@ -27,11 +26,15 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     queryKey: ["auth", "profile"],
     queryFn: authApi.getProfile,
     retry: false,
-    enabled: true,
-    staleTime: 5 * 60 * 1000, // 5 minutes
+    enabled: false, 
+    staleTime: 5 * 60 * 1000, 
   });
 
-  // Update user state when profile data changes
+  useEffect(() => {
+    refetchUser().catch(() => {
+    });
+  }, []);
+
   useEffect(() => {
     if (profileData) {
       setUser(profileData);

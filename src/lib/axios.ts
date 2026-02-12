@@ -11,10 +11,12 @@ const apiClient = axios.create({
 apiClient.interceptors.response.use(
   (response) => response,
   (error) => {
-    // Handle 401 Unauthorized - redirect to login
     if (error.response?.status === 401) {
       const currentPath = window.location.pathname;
-      if (currentPath !== "/login-form") {
+      const publicPaths = ["/", "/login-form", "/products"];
+      const isPublicPath = publicPaths.some(path => currentPath === path || currentPath.startsWith(path));
+      
+      if (!isPublicPath && currentPath !== "/login-form") {
         window.location.href = "/login-form";
       }
     }
