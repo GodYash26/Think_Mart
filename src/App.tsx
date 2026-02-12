@@ -1,11 +1,12 @@
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
-import { MainLayout } from '@/layout/main.layout'
+import { MainLayout } from '@/layout/main-layout'
 import { AdminDashboardPage } from './pages/admin/dashboard'
 import { HomePage } from './pages/home/home'
 import { ProductsPage } from './pages/products/products'
-import { DashboardLayout } from './layout/DashboardLayout'
-import { AddProductPage } from './pages/admin/add_product'
-import { AddCategoryPage } from './pages/admin/add_category'
+import { DashboardLayout } from './layout/dashboard-layout'
+import { AddProductPage } from './pages/admin/add-product'
+import { AddCategoryPage } from './pages/admin/add-category'
+import LoginForm from './auth/login-form'
 
 function App() {
   return (
@@ -20,6 +21,7 @@ function App() {
             </MainLayout>
           }
         />
+        <Route path='login-form' element={<LoginForm />} />
         <Route path='admin/' element={<DashboardLayout />}>
           <Route path="dashboard" element={<AdminDashboardPage />} />
           <Route path="add-product" element={<AddProductPage />} />
