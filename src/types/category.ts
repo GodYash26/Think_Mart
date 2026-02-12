@@ -1,13 +1,14 @@
 export interface Category {
   id: string
-  name: string
-  createdAt?: string
-  updatedAt?: string
+  category_name: string
 }
 
 export interface CreateCategoryInput {
-  name: string
+  category_name: string
+}
 
+export interface UpdateCategoryInput {
+  category_name: string
 }
 
 export interface CategoryResponse {
@@ -15,4 +16,9 @@ export interface CategoryResponse {
   message: string
   data?: Category
   error?: string
+}
+
+export interface CategoriesListResponse {
+  data: Category[]
+  count: number
 }

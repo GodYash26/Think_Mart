@@ -1,7 +1,8 @@
-"use client"
 
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
+import { useMutation, useQueryClient } from "@tanstack/react-query"
+import { toast } from "sonner"
 import { Button } from "@/components/ui/button"
 import {
   Form,
@@ -13,23 +14,63 @@ import {
   FormMessage,
 } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
-import { createCategorySchema, type CreateCategoryFormData } from "@/validations/category"
-import { useCreateCategory } from "@/hooks/useCreateCategory"
+import { categorySchema, type CategoryFormData } from "@/validations/category"
+import { categoryApi } from "@/lib/api/category"
 
-export function AddCategoryForm() {
-  const form = useForm<CreateCategoryFormData>({
-    resolver: zodResolver(createCategorySchema),
+interface AddCategoryFormProps {
+  categoryId?: string
+  initialData?: {
+    category_name: string
+  }
+  onSuccess?: () => void
+}
+
+export function AddCategoryForm({ categoryId, initialData, onSuccess }: AddCategoryFormProps) {
+  const form = useForm<CategoryFormData>({
+    resolver: zodResolver(categorySchema),
     defaultValues: {
-      name: "",
-    
+      category_name: initialData?.category_name || "",
     },
   })
 
-  const createCategoryMutation = useCreateCategory()
-  const isLoading = createCategoryMutation.isPending
+  const queryClient = useQueryClient()
 
-  async function onSubmit(values: CreateCategoryFormData) {
-    createCategoryMutation.mutate(values)
+  const createMutation = useMutation({
+    mutationFn: (data: CategoryFormData) => 
+      categoryApi.create({ category_name: data.category_name }),
+    onSuccess: () => {
+      toast.success("Category created successfully!")
+      queryClient.invalidateQueries({ queryKey: ["categories"] })
+      form.reset()
+      onSuccess?.()
+    },
+    onError: (error: any) => {
+      toast.error(error.message || "Failed to create category")
+    },
+  })
+
+  const updateMutation = useMutation({
+    mutationFn: (data: CategoryFormData) =>
+      categoryApi.update(categoryId!, { category_name: data.category_name }),
+    onSuccess: () => {
+      toast.success("Category updated successfully!")
+      queryClient.invalidateQueries({ queryKey: ["categories"] })
+      onSuccess?.()
+    },
+    onError: (error: any) => {
+      toast.error(error.message || "Failed to update category")
+    },
+  })
+
+  const isLoading = createMutation.isPending || updateMutation.isPending
+  const isEditing = !!categoryId
+
+  async function onSubmit(values: CategoryFormData) {
+    if (isEditing) {
+      updateMutation.mutate(values)
+    } else {
+      createMutation.mutate(values)
+    }
   }
 
   return (
@@ -38,15 +79,15 @@ export function AddCategoryForm() {
         {/* Category Name Field */}
         <FormField
           control={form.control}
-          name="name"
+          name="category_name"
           render={({ field }) => (
             <FormItem>
               <FormLabel>Category Name</FormLabel>
               <FormControl>
-                <Input placeholder="Enter category name" {...field} />
+                <Input placeholder="Enter category name" {...field} disabled={isLoading} />
               </FormControl>
               <FormDescription>
-                Category name must be between 2 and 50 characters
+                Category name must be between 2 and 100 characters
               </FormDescription>
               <FormMessage />
             </FormItem>
@@ -55,7 +96,13 @@ export function AddCategoryForm() {
 
         {/* Submit Button */}
         <Button type="submit" disabled={isLoading} className="w-full">
-          {isLoading ? "Creating Category..." : "Create Category"}
+          {isLoading
+            ? isEditing
+              ? "Updating Category..."
+              : "Creating Category..."
+            : isEditing
+            ? "Update Category"
+            : "Create Category"}
         </Button>
       </form>
     </Form>

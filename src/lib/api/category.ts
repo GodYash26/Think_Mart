@@ -1,51 +1,50 @@
-import axios from "axios"
-import type { AxiosInstance } from "axios"
-import type { CategoryResponse, CreateCategoryInput } from "@/types/category"
+import apiClient from "../axios";
+import type { Category, CreateCategoryInput, UpdateCategoryInput } from "@/types/category";
 
-const API_BASE_URL = "http://localhost:3000/api" // Update this to your backend URL
+export const categoryApi = {
+  // Create new category
+  create: async (data: CreateCategoryInput): Promise<Category> => {
+    const response = await apiClient.post<any>("/categories", data);
+    const cat = response.data;
+    return {
+      id: cat._id || cat.id,
+      category_name: cat.category_name,
+    };
+  },
 
-class CategoryAPI {
-  private api: AxiosInstance
+  // Get all categories
+  getAll: async (): Promise<Category[]> => {
+    const response = await apiClient.get<any>("/categories");
+    const categories = Array.isArray(response.data) ? response.data : response.data.data || [];
+    return categories.map((cat: any) => ({
+      id: cat._id || cat.id,
+      category_name: cat.category_name,
+    }));
+  },
 
-  constructor() {
-    this.api = axios.create({
-      baseURL: API_BASE_URL,
-      headers: {
-        "Content-Type": "application/json",
-      },
-    })
+  // Get single category
+  getById: async (id: string): Promise<Category> => {
+    const response = await apiClient.get<any>(`/categories/${id}`);
+    const cat = response.data;
+    return {
+      id: cat._id || cat.id,
+      category_name: cat.category_name,
+    };
+  },
 
-    // Add response interceptor for error handling
-    this.api.interceptors.response.use(
-      (response) => response,
-      (error) => {
-        return Promise.reject(error)
-      }
-    )
-  }
+  // Update category
+  update: async (id: string, data: UpdateCategoryInput): Promise<Category> => {
+    const response = await apiClient.patch<any>(`/categories/${id}`, data);
+    const cat = response.data;
+    return {
+      id: cat._id || cat.id,
+      category_name: cat.category_name,
+    };
+  },
 
-  async createCategory(data: CreateCategoryInput): Promise<CategoryResponse> {
-    const response = await this.api.post("/categories", data)
-    return response.data
-  }
-
-  async getCategory(id: string): Promise<CategoryResponse> {
-    const response = await this.api.get(`/categories/${id}`)
-    return response.data
-  }
-
-  async updateCategory(
-    id: string,
-    data: CreateCategoryInput
-  ): Promise<CategoryResponse> {
-    const response = await this.api.put(`/categories/${id}`, data)
-    return response.data
-  }
-
-  async getCategories(): Promise<CategoryResponse> {
-    const response = await this.api.get("/categories")
-    return response.data
-  }
-}
-
-export const categoryAPI = new CategoryAPI()
+  // Delete category
+  delete: async (id: string): Promise<{ message: string }> => {
+    const response = await apiClient.delete<{ message: string }>(`/categories/${id}`);
+    return response.data;
+  },
+};
