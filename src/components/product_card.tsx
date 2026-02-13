@@ -36,31 +36,48 @@ export function ProductCard({
     onToggleFavorite,
 }: ProductCardProps) {
     const [quantity, setQuantity] = useState(1);
+    const [quantityInput, setQuantityInput] = useState('1');
     const [isFavorite, setIsFavorite] = useState(false);
     const [orderDialogOpen, setOrderDialogOpen] = useState(false);
     const { user } = useAuth();
     const navigate = useNavigate();
 
     const handleIncrement = () => {
-        setQuantity((prev) => prev + 1);
+        const newQty = quantity + 1;
+        setQuantity(newQty);
+        setQuantityInput(String(newQty));
     };
 
     const handleDecrement = () => {
         if (quantity > 1) {
-            setQuantity((prev) => prev - 1);
+            const newQty = quantity - 1;
+            setQuantity(newQty);
+            setQuantityInput(String(newQty));
         }
     };
 
     const handleQuantityChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const value = e.target.value;
-        // Allow empty input while typing
-        if (value === '') {
-            setQuantity(1);
-            return;
+        setQuantityInput(value);
+        
+        // Update quantity state if valid
+        if (value !== '') {
+            const parsed = parseInt(value, 10);
+            if (!isNaN(parsed) && parsed >= 1) {
+                setQuantity(parsed);
+            }
         }
-        const parsed = parseInt(value, 10);
-        if (!isNaN(parsed) && parsed >= 1) {
+    };
+
+    const handleQuantityBlur = () => {
+        // Ensure valid value on blur
+        if (quantityInput === '' || parseInt(quantityInput, 10) < 1 || isNaN(parseInt(quantityInput, 10))) {
+            setQuantity(1);
+            setQuantityInput('1');
+        } else {
+            const parsed = parseInt(quantityInput, 10);
             setQuantity(parsed);
+            setQuantityInput(String(parsed));
         }
     };
 
@@ -170,10 +187,12 @@ export function ProductCard({
                                         <Minus className="w-3.5 h-3.5 text-gray-600" />
                                     </Button>
                                     <Input
-                                        value={quantity}
+                                        value={quantityInput}
                                         onChange={handleQuantityChange}
-                                        className="w-10 h-8 text-center text-sm font-medium focus:outline-none shadow-none border-none"
+                                        onBlur={handleQuantityBlur}
+                                        className="w-12 h-8 text-center text-sm font-medium focus:outline-none shadow-none border-none"
                                         min="1"
+                                        type="number"
                                     />
                                     <Button
                                         onClick={handleIncrement}
@@ -219,6 +238,7 @@ export function ProductCard({
                         name,
                         price: originalPrice - (discountedPrice || 0),
                         image,
+                        deliveryCharge,
                     }}
                     initialQuantity={quantity}
                 />
