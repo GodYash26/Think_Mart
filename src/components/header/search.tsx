@@ -1,5 +1,5 @@
 
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Search } from 'lucide-react';
 import { Button } from '../ui/button';
 import { Input } from '../ui/input';
@@ -16,6 +16,20 @@ const SearchBar: React.FC<SearchBarProps> = ({
   onSearch
 }) => {
   const [query, setQuery] = useState('');
+
+  useEffect(() => {
+    if (!onSearch) {
+      return;
+    }
+
+    const handle = window.setTimeout(() => {
+      onSearch(query);
+    }, 300);
+
+    return () => {
+      window.clearTimeout(handle);
+    };
+  }, [query, onSearch]);
 
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();

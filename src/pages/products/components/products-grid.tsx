@@ -1,5 +1,5 @@
 import { ProductCard } from '@/components/product_card';
-import type { Product } from '@/pages/products/fake.products';
+import type { Product } from '@/types/product';
 
 interface ProductsGridProps {
     products: Product[];
@@ -40,16 +40,16 @@ export function ProductsGrid({
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
             {products.map(product => (
                 <ProductCard
-                    key={product.id}
-                    name={product.name}
-                    image={product.image}
+                    key={product._id}
+                    name={product.productName}
+                    image={product.imageUrl ?? product.images ?? ""}
                     originalPrice={product.originalPrice}
-                    discountedPrice={product.discountedPrice}
+                    discountedPrice={product.discountedPrice ?? product.originalPrice}
                     discountPercentage={product.discountPercentage || 0}
-                    deliveryCharge={product.deliveryCharge}
+                    deliveryCharge={product.deliveryCharge ?? 0}
                     unit={product.unit}
-                    onAddToCart={(quantity) => onAddToCart?.(product.id, quantity)}
-                    onToggleFavorite={(isFavorite) => onToggleFavorite?.(product.id, isFavorite)}
+                    onAddToCart={(quantity) => onAddToCart?.(product._id, quantity)}
+                    onToggleFavorite={(isFavorite) => onToggleFavorite?.(product._id, isFavorite)}
                 />
             ))}
         </div>

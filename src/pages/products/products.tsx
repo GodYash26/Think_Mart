@@ -1,22 +1,70 @@
+import { useEffect, useMemo, useState } from 'react';
 import { ProductFilters } from './components/product-filters';
 import { ProductsGrid } from './components/products-grid';
 import { ActiveFilters } from './components/active-filters';
-import { useProductFilters } from '@/hooks/useProductFilters';
-import { fakeProducts } from './fake.products';
 import SearchBar from '@/components/header/search';
+import { useProducts } from '@/hooks/products/useProducts';
+import { useCategories } from '@/hooks/categories/useCategories';
 
 export function ProductsPage() {
-    const {
-        filters,
-        filteredProducts,
-        categories,
-        maxPrice,
-        setSearchQuery,
-        setSelectedCategory,
-        setPriceRange,
-        setMinRating,
-        resetFilters,
-    } = useProductFilters(fakeProducts);
+    const [searchQuery, setSearchQuery] = useState('');
+    const [selectedCategory, setSelectedCategory] = useState('All');
+    const [priceRange, setPriceRange] = useState<[number, number]>([0, 100]);
+    const [page, setPage] = useState(1);
+    const [limit, setLimit] = useState(9);
+
+    const { data: categories = [] } = useCategories();
+
+    const queryParams = useMemo(
+        () => ({
+            search: searchQuery.trim() ? searchQuery.trim() : undefined,
+            category: selectedCategory === 'All' ? undefined : selectedCategory,
+            minPrice: priceRange[0],
+            maxPrice: priceRange[1],
+            page,
+            limit,
+        }),
+        [searchQuery, selectedCategory, priceRange, page, limit]
+    );
+
+    const { data, isLoading } = useProducts(queryParams);
+    const products = data?.products ?? [];
+    const total = data?.total ?? 0;
+    const totalPages = Math.max(1, Math.ceil(total / limit));
+
+    const maxPrice = useMemo(() => {
+        if (products.length === 0) {
+            return 100;
+        }
+
+        const max = Math.max(
+            ...products.map((product) => product.discountedPrice ?? product.originalPrice)
+        );
+
+        return Math.max(max, 100);
+    }, [products]);
+
+    useEffect(() => {
+        setPage(1);
+    }, [searchQuery, selectedCategory, priceRange, limit]);
+
+    useEffect(() => {
+        setPriceRange((currentRange) => [
+            currentRange[0],
+            Math.min(currentRange[1], maxPrice),
+        ]);
+    }, [maxPrice]);
+
+    const categoryOptions = useMemo(
+        () => [
+            { id: 'All', name: 'All' },
+            ...categories.map((category) => ({
+                id: category.id,
+                name: category.category_name,
+            })),
+        ],
+        [categories]
+    );
 
     const handleAddToCart = (productId: string, quantity: number) => {
         console.log(`Added ${quantity} of product ${productId} to cart`);
@@ -26,38 +74,39 @@ export function ProductsPage() {
         console.log(`Product ${productId} favorite status: ${isFavorite}`);
     };
 
+    const resetFilters = () => {
+        setSearchQuery('');
+        setSelectedCategory('All');
+        setPriceRange([0, maxPrice]);
+    };
+
     // Build active filters list
     const activeFiltersList = [];
 
-    if (filters.searchQuery) {
+    if (searchQuery) {
         activeFiltersList.push({
             id: 'search',
-            label: `"${filters.searchQuery}"`,
+            label: `"${searchQuery}"`,
             onRemove: () => setSearchQuery(''),
         });
     }
 
-    if (filters.selectedCategory !== 'All') {
+    if (selectedCategory !== 'All') {
+        const activeCategory = categoryOptions.find(
+            (option) => option.id === selectedCategory
+        );
         activeFiltersList.push({
             id: 'category',
-            label: filters.selectedCategory,
+            label: activeCategory?.name ?? 'Category',
             onRemove: () => setSelectedCategory('All'),
         });
     }
 
-    if (filters.priceRange[0] > 0 || filters.priceRange[1] < maxPrice) {
+    if (priceRange[0] > 0 || priceRange[1] < maxPrice) {
         activeFiltersList.push({
             id: 'price',
-            label: `$${filters.priceRange[0].toFixed(2)} - $${filters.priceRange[1].toFixed(2)}`,
+            label: `$${priceRange[0].toFixed(2)} - $${priceRange[1].toFixed(2)}`,
             onRemove: () => setPriceRange([0, maxPrice]),
-        });
-    }
-
-    if (filters.minRating > 0) {
-        activeFiltersList.push({
-            id: 'rating',
-            label: `${filters.minRating}★ & up`,
-            onRemove: () => setMinRating(0),
         });
     }
 
@@ -88,14 +137,12 @@ export function ProductsPage() {
                     <div className="lg:col-span-1">
                         <div className="sticky top-4">
                             <ProductFilters
-                                categories={categories}
-                                selectedCategory={filters.selectedCategory}
+                                categories={categoryOptions}
+                                selectedCategory={selectedCategory}
                                 onCategoryChange={setSelectedCategory}
-                                priceRange={filters.priceRange}
+                                priceRange={priceRange}
                                 maxPrice={maxPrice}
                                 onPriceChange={setPriceRange}
-                                minRating={filters.minRating}
-                                onRatingChange={setMinRating}
                                 onResetFilters={resetFilters}
                             />
                         </div>
@@ -106,16 +153,53 @@ export function ProductsPage() {
                         {/* Results Info */}
                         <div className="mb-6 flex items-center justify-between">
                             <p className="text-gray-600 text-sm">
-                                Showing <span className="font-semibold">{filteredProducts.length}</span> products
+                                Showing <span className="font-semibold">{products.length}</span> of{' '}
+                                <span className="font-semibold">{total}</span> products
                             </p>
+                            <div className="flex items-center gap-2 text-sm text-gray-500">
+                                <span>Page {page} of {totalPages}</span>
+                            </div>
                         </div>
 
                         {/* Products Grid */}
                         <ProductsGrid
-                            products={filteredProducts}
+                            products={products}
+                            isLoading={isLoading}
                             onAddToCart={handleAddToCart}
                             onToggleFavorite={handleToggleFavorite}
                         />
+
+                        {/* Pagination */}
+                        <div className="mt-8 flex flex-wrap items-center justify-between gap-3 text-sm text-gray-600">
+                            <div className="flex items-center gap-2">
+                                <span>Rows</span>
+                                <select
+                                    value={limit}
+                                    onChange={(event) => setLimit(Number(event.target.value))}
+                                    className="border border-gray-200 rounded-md px-2 py-1 bg-white"
+                                >
+                                    <option value={9}>9</option>
+                                    <option value={12}>12</option>
+                                    <option value={18}>18</option>
+                                </select>
+                            </div>
+                            <div className="flex items-center gap-2">
+                                <button
+                                    className="border border-gray-200 rounded-md px-3 py-1 bg-white disabled:opacity-50"
+                                    onClick={() => setPage((prev) => Math.max(1, prev - 1))}
+                                    disabled={page <= 1}
+                                >
+                                    Previous
+                                </button>
+                                <button
+                                    className="border border-gray-200 rounded-md px-3 py-1 bg-white disabled:opacity-50"
+                                    onClick={() => setPage((prev) => Math.min(totalPages, prev + 1))}
+                                    disabled={page >= totalPages}
+                                >
+                                    Next
+                                </button>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>

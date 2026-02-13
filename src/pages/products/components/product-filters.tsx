@@ -4,15 +4,18 @@ import { Button } from '@/components/ui/button';
 import { ChevronDown } from 'lucide-react';
 import { useState } from 'react';
 
+interface CategoryOption {
+    id: string;
+    name: string;
+}
+
 interface ProductFiltersProps {
-    categories: string[];
+    categories: CategoryOption[];
     selectedCategory: string;
     onCategoryChange: (category: string) => void;
     priceRange: [number, number];
     maxPrice: number;
     onPriceChange: (range: [number, number]) => void;
-    minRating: number;
-    onRatingChange: (rating: number) => void;
     onResetFilters: () => void;
 }
 
@@ -23,14 +26,11 @@ export function ProductFilters({
     priceRange,
     maxPrice,
     onPriceChange,
-    minRating,
-    onRatingChange,
     onResetFilters,
 }: ProductFiltersProps) {
     const [expandedSections, setExpandedSections] = useState({
         categories: true,
         price: true,
-        rating: true,
     });
 
     const toggleSection = (section: keyof typeof expandedSections) => {
@@ -54,21 +54,6 @@ export function ProductFilters({
         }
     };
 
-    const renderStars = (rating: number) => {
-        return (
-            <div className="flex gap-0.5">
-                {[...Array(5)].map((_, i) => (
-                    <span
-                        key={i}
-                        className={`text-lg ${i < rating ? 'text-yellow-400' : 'text-gray-300'}`}
-                    >
-                        ★
-                    </span>
-                ))}
-            </div>
-        );
-    };
-
     return (
         <div className="space-y-4">
             {/* Categories Filter */}
@@ -86,13 +71,13 @@ export function ProductFilters({
                 </CardHeader>
                 {expandedSections.categories && (
                     <CardContent className="space-y-3">
-                        {categories.map(category => (
-                            <label key={category} className="flex items-center gap-3 cursor-pointer">
+                        {categories.map((category) => (
+                            <label key={category.id} className="flex items-center gap-3 cursor-pointer">
                                 <Checkbox
-                                    checked={selectedCategory === category}
-                                    onChange={() => onCategoryChange(category)}
+                                    checked={selectedCategory === category.id}
+                                    onChange={() => onCategoryChange(category.id)}
                                 />
-                                <span className="text-sm text-gray-700">{category}</span>
+                                <span className="text-sm text-gray-700">{category.name}</span>
                             </label>
                         ))}
                     </CardContent>
@@ -140,37 +125,6 @@ export function ProductFilters({
                                 ${priceRange[0].toFixed(2)} - ${priceRange[1].toFixed(2)}
                             </span>
                         </div>
-                    </CardContent>
-                )}
-            </Card>
-
-            {/* Rating Filter */}
-            <Card className="border-gray-200">
-                <CardHeader className="pb-3">
-                    <Button
-                        onClick={() => toggleSection('rating')}
-                        className="flex items-center justify-between w-full bg-white hover:bg-white text-gray-700"
-                    >
-                        <CardTitle className="text-base font-semibold">Rating</CardTitle>
-                        <ChevronDown
-                            className={`w-4 h-4 transition-transform ${expandedSections.rating ? 'rotate-180' : ''}`}
-                        />
-                    </Button>
-                </CardHeader>
-                {expandedSections.rating && (
-                    <CardContent className="space-y-3">
-                        {[5, 4, 3, 2, 1, 0].map(rating => (
-                            <label key={rating} className="flex items-center gap-3 cursor-pointer">
-                                <Checkbox
-                                    checked={minRating === rating}
-                                    onChange={() => onRatingChange(rating)}
-                                />
-                                <div className="flex items-center gap-2">
-                                    {rating > 0 ? renderStars(rating) : <span className="text-sm text-gray-600">All Ratings</span>}
-                                    {rating > 0 && <span className="text-xs text-gray-500">& up</span>}
-                                </div>
-                            </label>
-                        ))}
                     </CardContent>
                 )}
             </Card>
