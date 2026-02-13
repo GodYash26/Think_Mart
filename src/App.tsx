@@ -1,5 +1,6 @@
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
 import { MainLayout } from '@/layout/main-layout'
+import { ScrollToTop } from '@/components/scroll-to-top'
 import { AdminDashboardPage } from './pages/admin/dashboard'
 import { HomePage } from './pages/home/home'
 import { ProductsPage } from './pages/products/products'
@@ -26,6 +27,7 @@ function App() {
   return (
     <Router>
       <AuthProvider>
+        <ScrollToTop />
         <Routes>
           <Route path="/" element={<HomePage />} />
           <Route
