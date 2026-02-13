@@ -46,7 +46,6 @@ export function ProductsTable({
             <TableHead>Remaining Stock</TableHead>
             <TableHead>Status</TableHead>
             <TableHead>Featured</TableHead>
-            <TableHead>Popular</TableHead>
             <TableHead>Offer</TableHead>
             <TableHead className="text-right">Actions</TableHead>
           </TableRow>
@@ -98,17 +97,7 @@ export function ProductsTable({
                     }
                   />
                 </TableCell>
-                <TableCell>
-                  <Checkbox
-                    checked={product.isPopular ?? false}
-                    disabled={isUpdatingId === product._id}
-                    onChange={(event) =>
-                      onStatusChange(product._id, {
-                        isPopular: event.target.checked,
-                      })
-                    }
-                  />
-                </TableCell>
+                
                 <TableCell>
                   <Checkbox
                     checked={product.isOffer ?? false}

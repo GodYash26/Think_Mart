@@ -39,7 +39,6 @@ export interface CreateProductInput {
   soldQuantity?: number
   isActive?: boolean
   isFeatured?: boolean
-  isPopular?: boolean
   isOffer?: boolean
   isDeleted?: boolean
 }
@@ -51,6 +50,9 @@ export interface ProductListParams {
   search?: string
   minPrice?: number
   maxPrice?: number
+  isFeatured?: boolean
+  isPopular?: boolean
+  isOffer?: boolean
   page?: number
   limit?: number
 }

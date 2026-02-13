@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import { Heart, ShoppingCart, Minus, Plus } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -13,6 +14,7 @@ export interface ProductCardProps {
     discountPercentage?: number;
     deliveryCharge: number;
     unit?: string;
+    href?: string;
     onAddToCart?: (quantity: number) => void;
     onToggleFavorite?: (isFavorite: boolean) => void;
 }
@@ -25,6 +27,7 @@ export function ProductCard({
     discountPercentage,
     deliveryCharge,
     unit = "/kg",
+    href,
     onAddToCart,
     onToggleFavorite,
 }: ProductCardProps) {
@@ -84,16 +87,32 @@ export function ProductCard({
             <CardContent className="p-0">
                 {/* Product Image */}
                 <div className="relative flex items-center justify-center h-36 pt-2">
-                    <img
-                        src={image}
-                        alt={name}
-                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
-                    />
+                    {href ? (
+                        <Link to={href} className="block w-full h-full">
+                            <img
+                                src={image}
+                                alt={name}
+                                className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                            />
+                        </Link>
+                    ) : (
+                        <img
+                            src={image}
+                            alt={name}
+                            className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                        />
+                    )}
                 </div>
 
                 {/* Product Details */}
                 <div className="px-4 py-2">
-                    <h3 className="text-base font-normal text-gray-900 mb-2">{name}</h3>
+                    {href ? (
+                        <Link to={href} className="block">
+                            <h3 className="text-base font-normal text-gray-900 mb-2">{name}</h3>
+                        </Link>
+                    ) : (
+                        <h3 className="text-base font-normal text-gray-900 mb-2">{name}</h3>
+                    )}
 
                     {/* Price Section */}
                     <div className="flex items-baseline gap-2 mb-1">

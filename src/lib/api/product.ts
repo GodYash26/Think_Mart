@@ -12,7 +12,7 @@ const buildQuery = (params?: ProductListParams) => {
     return undefined
   }
 
-  const query: Record<string, string | number> = {}
+  const query: Record<string, string | number | boolean> = {}
 
   if (params.category) {
     query.category = params.category
@@ -28,6 +28,18 @@ const buildQuery = (params?: ProductListParams) => {
 
   if (params.maxPrice !== undefined) {
     query.maxPrice = params.maxPrice
+  }
+
+  if (params.isFeatured !== undefined) {
+    query.isFeatured = params.isFeatured
+  }
+
+  if (params.isPopular !== undefined) {
+    query.isPopular = params.isPopular
+  }
+
+  if (params.isOffer !== undefined) {
+    query.isOffer = params.isOffer
   }
 
   if (params.page !== undefined) {

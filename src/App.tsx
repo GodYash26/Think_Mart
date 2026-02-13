@@ -3,6 +3,7 @@ import { MainLayout } from '@/layout/main-layout'
 import { AdminDashboardPage } from './pages/admin/dashboard'
 import { HomePage } from './pages/home/home'
 import { ProductsPage } from './pages/products/products'
+import { ProductDetailsPage } from './pages/products/product-details'
 import { DashboardLayout } from './layout/dashboard-layout'
 import { AddProductPage } from './pages/admin/add-product'
 import { AddCategoryPage } from './pages/admin/add-category'
@@ -25,6 +26,14 @@ function App() {
             element={
               <MainLayout>
                 <ProductsPage />
+              </MainLayout>
+            }
+          />
+          <Route
+            path="/products/:id"
+            element={
+              <MainLayout>
+                <ProductDetailsPage />
               </MainLayout>
             }
           />

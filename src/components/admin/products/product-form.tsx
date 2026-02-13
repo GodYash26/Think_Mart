@@ -258,21 +258,6 @@ export function ProductForm({
           />
           <FormField
             control={form.control}
-            name="isPopular"
-            render={({ field }) => (
-              <FormItem className="flex items-center gap-2">
-                <FormControl>
-                  <Checkbox
-                    checked={field.value ?? false}
-                    onChange={(event) => field.onChange(event.target.checked)}
-                  />
-                </FormControl>
-                <FormLabel>Popular</FormLabel>
-              </FormItem>
-            )}
-          />
-          <FormField
-            control={form.control}
             name="isOffer"
             render={({ field }) => (
               <FormItem className="flex items-center gap-2">
