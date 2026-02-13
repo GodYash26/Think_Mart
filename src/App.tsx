@@ -10,6 +10,8 @@ import { AddCategoryPage } from './pages/admin/add-category'
 import { ProfilePage } from './pages/admin/profile'
 import { AdminProductsPage } from './pages/admin/products'
 import { AdminProductDetailsPage } from './pages/admin/product-details'
+import { AdminOrdersPage } from './pages/admin/orders'
+import { AdminCustomersPage } from './pages/admin/customers'
 import LoginForm from './auth/login-form'
 import AuthEntry from './auth/auth-entry'
 import { AuthProvider } from './hooks/useAuth'
@@ -17,6 +19,8 @@ import { ProtectedRoute } from './components/protected-route'
 import { UserRole } from './types/auth'
 import RegisterForm from './components/customer/register-form'
 import CustomerDashboard from './pages/customer-dashboard'
+import { MyOrdersPage } from './pages/my-orders'
+import ProfilePageCustomer from './components/profile/profile-page'
 
 function App() {
   return (
@@ -55,6 +59,26 @@ function App() {
               </ProtectedRoute>
             }
           />
+          <Route
+            path='/my-orders'
+            element={
+              <ProtectedRoute allowedRoles={[UserRole.CUSTOMER, UserRole.ADMIN]}>
+                <MainLayout>
+                  <MyOrdersPage />
+                </MainLayout>
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path='/profile'
+            element={
+              <ProtectedRoute allowedRoles={[UserRole.CUSTOMER, UserRole.ADMIN]}>
+                <MainLayout>
+                  <ProfilePageCustomer />
+                </MainLayout>
+              </ProtectedRoute>
+            }
+          />
 
           {/* Admin Routes */}
           <Route
@@ -70,6 +94,8 @@ function App() {
             <Route path="add-category" element={<AddCategoryPage />} />
             <Route path="products" element={<AdminProductsPage />} />
             <Route path="products/:id" element={<AdminProductDetailsPage />} />
+            <Route path="orders" element={<AdminOrdersPage />} />
+            <Route path="customers" element={<AdminCustomersPage />} />
             <Route path="profile" element={<ProfilePage />} />
           </Route>
         </Routes>

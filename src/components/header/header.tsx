@@ -131,12 +131,12 @@ const Header: React.FC = () => {
                                                 >
                                                     Dashboard
                                                 </DropdownMenuItem>
-                                                <DropdownMenuItem 
-                                                    className="cursor-pointer"
-                                                    onClick={() => navigate("/customer/orders")}
-                                                >
-                                                    Orders
-                                                </DropdownMenuItem>
+                                        <DropdownMenuItem 
+                                            className="cursor-pointer"
+                                            onClick={() => navigate("/my-orders")}
+                                        >
+                                            Orders
+                                        </DropdownMenuItem>
                                             </>
                                         )}
                                         {user.role === "admin" && (

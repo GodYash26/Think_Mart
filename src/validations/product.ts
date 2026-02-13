@@ -37,6 +37,10 @@ export const createProductSchema = z.object({
         0,
         "Discounted price must be 0 or greater"
     ),
+    priceAfterDiscount: optionalNumber(
+        0,
+        "Price after discount must be 0 or greater"
+    ),
     deliveryCharge: optionalNumber(0, "Delivery charge must be 0 or greater"),
     category: z.string().min(1, "Category is required"),
     unit: z.string().min(1, "Unit is required"),
@@ -55,6 +59,7 @@ export type CreateProductFormValues = {
     images?: string
     originalPrice: number | string
     discountedPrice?: number | string
+    priceAfterDiscount?: number | string
     deliveryCharge?: number | string
     category: string
     unit: string

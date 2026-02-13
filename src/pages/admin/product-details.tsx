@@ -48,7 +48,11 @@ export function AdminProductDetailsPage() {
   }, [product])
 
   const handleUpdate = (values: CreateProductFormData) => {
-    updateMutation.mutate(cleanPayload(values))
+    const priceAfterDiscount = values.originalPrice - (values.discountedPrice || 0);
+    updateMutation.mutate(cleanPayload({
+      ...values,
+      priceAfterDiscount,
+    }))
   }
 
   const handleDelete = async () => {

@@ -41,6 +41,7 @@ export function ProductsGrid({
             {products.map(product => (
                 <ProductCard
                     key={product._id}
+                    _id={product._id}
                     name={product.productName}
                     image={product.imageUrl ?? product.images ?? ""}
                     originalPrice={product.originalPrice}

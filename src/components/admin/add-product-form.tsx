@@ -8,7 +8,11 @@ export function AddProductForm() {
   const isLoading = createProductMutation.isPending
 
   async function onSubmit(values: CreateProductFormData) {
-    createProductMutation.mutate(values)
+    const priceAfterDiscount = values.originalPrice - (values.discountedPrice || 0);
+    createProductMutation.mutate({
+      ...values,
+      priceAfterDiscount,
+    })
   }
 
   return (

@@ -6,6 +6,7 @@ export interface Product {
   imageUrl?: string
   originalPrice: number
   discountedPrice?: number
+  priceAfterDiscount?: number
   discountPercentage?: number
   deliveryCharge?: number
   category: string
@@ -30,6 +31,7 @@ export interface CreateProductInput {
   images?: string
   originalPrice: number
   discountedPrice?: number
+  priceAfterDiscount?: number
   deliveryCharge?: number
   category: string
   rating?: number
