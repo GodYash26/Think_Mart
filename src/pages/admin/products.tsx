@@ -1,5 +1,7 @@
 import { useEffect, useMemo, useState } from "react"
 import { Link } from "react-router-dom"
+import { useMutation, useQueryClient } from "@tanstack/react-query"
+import { toast } from "sonner"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import {
@@ -13,6 +15,8 @@ import { ProductsTable } from "@/components/admin/products/products-table"
 import { useProducts } from "@/hooks/products/useProducts"
 import { useDeleteProduct } from "@/hooks/products/useDeleteProduct"
 import { useCategories } from "@/hooks/categories/useCategories"
+import { productApi } from "@/lib/api/product"
+import type { UpdateProductInput } from "@/types/product"
 
 export function AdminProductsPage() {
   const [search, setSearch] = useState("")
@@ -33,6 +37,19 @@ export function AdminProductsPage() {
   const { data, isLoading } = useProducts(queryParams)
   const { data: categories = [] } = useCategories()
   const deleteMutation = useDeleteProduct()
+  const queryClient = useQueryClient()
+
+  const statusMutation = useMutation({
+    mutationFn: ({ id, data }: { id: string; data: UpdateProductInput }) =>
+      productApi.update(id, data),
+    onSuccess: () => {
+      toast.success("Product status updated")
+      queryClient.invalidateQueries({ queryKey: ["products"] })
+    },
+    onError: (error: any) => {
+      toast.error(error.message || "Failed to update product status")
+    },
+  })
 
   const products = data?.products ?? []
   const total = data?.total ?? 0
@@ -44,6 +61,10 @@ export function AdminProductsPage() {
 
   const handleDelete = (id: string) => {
     deleteMutation.mutate(id)
+  }
+
+  const handleStatusChange = (id: string, data: UpdateProductInput) => {
+    statusMutation.mutate({ id, data })
   }
 
   return (
@@ -105,6 +126,8 @@ export function AdminProductsPage() {
             products={products}
             onDelete={handleDelete}
             isDeletingId={deleteMutation.variables ?? null}
+            isUpdatingId={statusMutation.variables?.id ?? null}
+            onStatusChange={handleStatusChange}
           />
         )}
 

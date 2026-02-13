@@ -11,6 +11,7 @@ import {
 } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
+import { Checkbox } from "@/components/ui/checkbox"
 import {
   Select,
   SelectContent,
@@ -60,6 +61,9 @@ export function ProductForm({
       unit: "",
       totalStock: undefined,
       isActive: true,
+      isFeatured: false,
+      isPopular: false,
+      isOffer: false,
       ...initialValues,
     },
   })
@@ -235,6 +239,54 @@ export function ProductForm({
             </FormItem>
           )}
         />
+
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+          <FormField
+            control={form.control}
+            name="isFeatured"
+            render={({ field }) => (
+              <FormItem className="flex items-center gap-2">
+                <FormControl>
+                  <Checkbox
+                    checked={field.value ?? false}
+                    onChange={(event) => field.onChange(event.target.checked)}
+                  />
+                </FormControl>
+                <FormLabel>Featured</FormLabel>
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="isPopular"
+            render={({ field }) => (
+              <FormItem className="flex items-center gap-2">
+                <FormControl>
+                  <Checkbox
+                    checked={field.value ?? false}
+                    onChange={(event) => field.onChange(event.target.checked)}
+                  />
+                </FormControl>
+                <FormLabel>Popular</FormLabel>
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="isOffer"
+            render={({ field }) => (
+              <FormItem className="flex items-center gap-2">
+                <FormControl>
+                  <Checkbox
+                    checked={field.value ?? false}
+                    onChange={(event) => field.onChange(event.target.checked)}
+                  />
+                </FormControl>
+                <FormLabel>Offer</FormLabel>
+              </FormItem>
+            )}
+          />
+        </div>
 
         <Button type="submit" disabled={isSubmitting} className="w-full">
           {isSubmitting ? "Saving..." : submitLabel}

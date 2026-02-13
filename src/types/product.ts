@@ -17,6 +17,8 @@ export interface Product {
   soldQuantity?: number
   isActive?: boolean
   isFeatured?: boolean
+  isPopular?: boolean
+  isOffer?: boolean
   isDeleted?: boolean
   createdAt?: string
   updatedAt?: string
@@ -37,6 +39,8 @@ export interface CreateProductInput {
   soldQuantity?: number
   isActive?: boolean
   isFeatured?: boolean
+  isPopular?: boolean
+  isOffer?: boolean
   isDeleted?: boolean
 }
 

@@ -91,15 +91,18 @@ export function ProductProfile({ product }: ProductProfileProps) {
           </div>
         </div>
         <div>
-          <div className="text-sm text-muted-foreground">Deleted</div>
+          <div className="text-sm text-muted-foreground">Popular</div>
           <div className="font-medium">
-            {product.isDeleted ? "Yes" : "No"}
+            {product.isPopular ? "Yes" : "No"}
           </div>
         </div>
         <div>
-          <div className="text-sm text-muted-foreground">Image Id</div>
-          <div className="font-medium">{formatValue(product.images)}</div>
+          <div className="text-sm text-muted-foreground">Offer</div>
+          <div className="font-medium">
+            {product.isOffer ? "Yes" : "No"}
+          </div>
         </div>
+        
         <div>
           <div className="text-sm text-muted-foreground">Created At</div>
           <div className="font-medium">{formatDate(product.createdAt)}</div>

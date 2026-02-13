@@ -42,6 +42,9 @@ export const createProductSchema = z.object({
     unit: z.string().min(1, "Unit is required"),
     totalStock: optionalInt(1, "Stock must be 1 or greater"),
     isActive: z.boolean().optional(),
+    isFeatured: z.boolean().optional(),
+    isPopular: z.boolean().optional(),
+    isOffer: z.boolean().optional(),
 })
 
 export const updateProductSchema = createProductSchema.partial()
@@ -57,6 +60,9 @@ export type CreateProductFormValues = {
     unit: string
     totalStock?: number | string
     isActive?: boolean
+    isFeatured?: boolean
+    isPopular?: boolean
+    isOffer?: boolean
 }
 
 export type CreateProductFormData = z.infer<typeof createProductSchema>

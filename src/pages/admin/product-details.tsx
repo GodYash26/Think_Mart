@@ -41,6 +41,8 @@ export function AdminProductDetailsPage() {
       soldQuantity: product.soldQuantity,
       isActive: product.isActive,
       isFeatured: product.isFeatured,
+      isPopular: product.isPopular,
+      isOffer: product.isOffer,
       isDeleted: product.isDeleted,
     }
   }, [product])
