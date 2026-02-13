@@ -1,31 +1,59 @@
 export interface Product {
-  id: string
-  name: string
-  price: number
-  discountedPrice: number
-  description: string
+  _id: string
+  productName: string
+  description?: string
+  images?: string
+  imageUrl?: string
+  originalPrice: number
+  discountedPrice?: number
+  discountPercentage?: number
+  deliveryCharge?: number
   category: string
-  rating: number
-  image: string
-  stock: number
+  categoryName?: string
+  rating?: number
+  unit: string
+  totalStock?: number
+  remainingStock?: number
+  soldQuantity?: number
+  isActive?: boolean
+  isFeatured?: boolean
+  isDeleted?: boolean
   createdAt?: string
   updatedAt?: string
 }
 
 export interface CreateProductInput {
-  name: string
-  price: number
-  discountedPrice: number
-  description: string
+  productName: string
+  description?: string
+  images?: string
+  originalPrice: number
+  discountedPrice?: number
+  deliveryCharge?: number
   category: string
-  rating: number
-  image: string
-  stock: number
+  rating?: number
+  unit: string
+  totalStock?: number
+  remainingStock?: number
+  soldQuantity?: number
+  isActive?: boolean
+  isFeatured?: boolean
+  isDeleted?: boolean
 }
 
-export interface ProductResponse {
-  success: boolean
-  message: string
-  data?: Product
-  error?: string
+export type UpdateProductInput = Partial<CreateProductInput>
+
+export interface ProductListParams {
+  category?: string
+  search?: string
+  minPrice?: number
+  maxPrice?: number
+  page?: number
+  limit?: number
+}
+
+export interface ProductListResponse {
+  products: Product[]
+  total: number
+  page: number
+  limit: number
 }

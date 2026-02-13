@@ -49,18 +49,18 @@ const data = {
       icon: IconListDetails,
     },
     {
-      title: "Analytics",
-      url: "#",
+      title: "Products",
+      url: "/admin/products",
       icon: IconChartBar,
     },
     {
-      title: "Projects",
-      url: "#",
+      title: "Orders",
+      url: "/admin/orders",
       icon: IconFolder,
     },
     {
       title: "Team",
-      url: "#",
+      url: "/admin/team",
       icon: IconUsers,
     },
   ],
@@ -115,34 +115,34 @@ const data = {
   navSecondary: [
     {
       title: "Settings",
-      url: "#",
+      url: "/admin/settings",
       icon: IconSettings,
     },
     {
       title: "Get Help",
-      url: "#",
+      url: "/admin/help",
       icon: IconHelp,
     },
     {
       title: "Search",
-      url: "#",
+      url: "/admin/search",
       icon: IconSearch,
     },
   ],
   documents: [
     {
-      name: "Data Library",
-      url: "#",
+      name: "Rating Approvals",
+      url: "/admin/approve-ratings",
       icon: IconDatabase,
     },
     {
       name: "Reports",
-      url: "#",
+      url: "/admin/reports",
       icon: IconReport,
     },
     {
-      name: "Word Assistant",
-      url: "#",
+      name: "Billings",
+      url: "/admin/billings",
       icon: IconFileWord,
     },
   ],
