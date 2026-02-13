@@ -23,7 +23,7 @@ export function ProtectedRoute({
   }
 
   if (!isAuthenticated || !user) {
-    return <Navigate to="/login-form" replace />;
+    return <Navigate to="/" replace />;
   }
 
   if (requiredRole && user.role !== requiredRole) {

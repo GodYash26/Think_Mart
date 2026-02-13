@@ -4,20 +4,50 @@ import React from "react";
 import SearchBar from "./search";
 import logo from "../../assets/logo.png";
 import { Button } from "../ui/button";
-import { ShoppingCart, Heart, User } from "lucide-react";
+import { ShoppingCart, Heart, LogOut } from "lucide-react";
 import {
     DropdownMenu,
     DropdownMenuContent,
     DropdownMenuTrigger,
     DropdownMenuItem,
 } from "../ui/dropdown-menu";
-import { Link } from "react-router-dom";
+import {
+    Sheet,
+    SheetContent,
+} from "../ui/sheet";
+import { Link, useNavigate } from "react-router-dom";
+import { useAuth } from "@/hooks/useAuth";
+import { User } from "lucide-react";
+import RegisterForm from "../customer/register-form";
 
 const Header: React.FC = () => {
-
+    const { isAuthenticated, user, logout } = useAuth();
+    const navigate = useNavigate();
     const [cartCount] = React.useState(6);
+    const [isAuthSheetOpen, setIsAuthSheetOpen] = React.useState(false);
+    const [authTab, setAuthTab] = React.useState<"signin" | "signup">("signin");
 
+    // Close auth sheet when user is authenticated
+    React.useEffect(() => {
+        if (isAuthenticated && user) {
+            setIsAuthSheetOpen(false);
+        }
+    }, [isAuthenticated, user]);
 
+    // Get user initials from fullname
+    const getInitials = (fullname: string) => {
+        return fullname
+            .split(" ")
+            .map((word) => word[0])
+            .join("")
+            .toUpperCase()
+            .slice(0, 2);
+    };
+
+    const handleOpenAuthSheet = (tab: "signin" | "signup") => {
+        setAuthTab(tab);
+        setIsAuthSheetOpen(true);
+    };
 
     return (
         <header className="w-full bg-white shadow-xs sticky top-0 z-50">
@@ -66,24 +96,98 @@ const Header: React.FC = () => {
 
                     <DropdownMenu>
                         <DropdownMenuTrigger asChild>
-                            <Button className="h-12 w-12 bg-gray-200 text-gray-500 hover:bg-gray-300">
-                                <User size={28} strokeWidth={2.5} />
+                            <Button className={`h-12 w-12 font-bold text-lg ${
+                                isAuthenticated && user
+                                    ? "bg-[#76BA2C] text-white hover:bg-[#65a524]"
+                                    : "bg-gray-200 text-gray-500 hover:bg-gray-300"
+                            }`}>
+                                {isAuthenticated && user ? (
+                                    getInitials(user.fullname)
+                                ) : (
+                                    <User size={24} />
+                                )}
                             </Button>
                         </DropdownMenuTrigger>
                         <DropdownMenuContent align="end" className="w-64">
-                            <div className="p-4 space-y-3">
-                                <h4 className="font-semibold text-sm">Account</h4>
-                                <div className="space-y-2">
-                                    <DropdownMenuItem className="cursor-pointer">Profile</DropdownMenuItem>
-                                    <DropdownMenuItem className="cursor-pointer">Orders</DropdownMenuItem>
-                                    <DropdownMenuItem className="cursor-pointer">Settings</DropdownMenuItem>
-                                    <DropdownMenuItem className="cursor-pointer">Logout</DropdownMenuItem>
+                            {/* Authenticated User - Show Profile Menu */}
+                            {isAuthenticated && user ? (
+                                <div className="p-4 space-y-3">
+                                    <div className="border-b pb-3">
+                                        <p className="font-semibold text-sm">{user.fullname}</p>
+                                        <p className="text-xs text-gray-500">{user.email}</p>
+                                    </div>
+                                    <div className="space-y-2">
+                                        <DropdownMenuItem 
+                                            className="cursor-pointer"
+                                            onClick={() => navigate("/profile")}
+                                        >
+                                            Profile
+                                        </DropdownMenuItem>
+                                        {user.role === "customer" && (
+                                            <>
+                                                <DropdownMenuItem 
+                                                    className="cursor-pointer"
+                                                    onClick={() => navigate("/customer/dashboard")}
+                                                >
+                                                    Dashboard
+                                                </DropdownMenuItem>
+                                                <DropdownMenuItem 
+                                                    className="cursor-pointer"
+                                                    onClick={() => navigate("/customer/orders")}
+                                                >
+                                                    Orders
+                                                </DropdownMenuItem>
+                                            </>
+                                        )}
+                                        {user.role === "admin" && (
+                                            <DropdownMenuItem 
+                                                className="cursor-pointer"
+                                                onClick={() => navigate("/admin/dashboard")}
+                                            >
+                                                Dashboard
+                                            </DropdownMenuItem>
+                                        )}
+                                        <DropdownMenuItem className="cursor-pointer">
+                                            Settings
+                                        </DropdownMenuItem>
+                                        <DropdownMenuItem 
+                                            className="cursor-pointer text-red-600"
+                                            onClick={() => logout()}
+                                        >
+                                            <LogOut className="h-4 w-4 mr-2" />
+                                            Logout
+                                        </DropdownMenuItem>
+                                    </div>
                                 </div>
-                            </div>
+                            ) : (
+                                /* Unauthenticated User - Show Login and Signup Buttons */
+                                <div className="p-4 space-y-2">
+                                    <Button 
+                                        className="w-full border-[#76BA2C] text-[#76BA2C] hover:bg-[#76BA2C] hover:text-white"
+                                        variant="outline"
+                                        onClick={() => handleOpenAuthSheet("signin")}
+                                    >
+                                        Sign In
+                                    </Button>
+                                    <Button 
+                                        className="w-full bg-[#76BA2C] hover:bg-[#65a524] text-white"
+                                        onClick={() => handleOpenAuthSheet("signup")}
+                                    >
+                                        Sign Up
+                                    </Button>
+                                </div>
+                            )}
                         </DropdownMenuContent>
                     </DropdownMenu>
                 </div>
             </div>
+
+            {/* Auth Sheet for Login/Register */}
+            <Sheet open={isAuthSheetOpen} onOpenChange={setIsAuthSheetOpen}>
+                <SheetContent side="right" className="w-full sm:max-w-md overflow-y-auto">
+                    <RegisterForm initialTab={authTab} />
+                </SheetContent>
+            </Sheet>
         </header>
     )
 }

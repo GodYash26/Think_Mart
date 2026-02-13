@@ -13,11 +13,11 @@ apiClient.interceptors.response.use(
   (error) => {
     if (error.response?.status === 401) {
       const currentPath = window.location.pathname;
-      const publicPaths = ["/", "/login-form", "/products"];
+      const publicPaths = ["/", "/login", "/register", "/products"];
       const isPublicPath = publicPaths.some(path => currentPath === path || currentPath.startsWith(path));
       
-      if (!isPublicPath && currentPath !== "/login-form") {
-        window.location.href = "/login-form";
+      if (!isPublicPath && currentPath !== "/") {
+        window.location.href = "/";
       }
     }
 

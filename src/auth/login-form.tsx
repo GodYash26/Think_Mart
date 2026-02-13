@@ -108,6 +108,20 @@ export default function LoginForm() {
             >
               {isSubmitting ? "Logging in..." : "Login"}
             </Button>
+
+            {/* Register Link */}
+            <div className="text-center">
+              <p className="text-sm text-muted-foreground">
+                Don't have an account?{" "}
+                <button
+                  type="button"
+                  onClick={() => window.location.href = "/register"}
+                  className="text-[--brand-green] hover:underline font-medium transition-colors"
+                >
+                  Sign Up
+                </button>
+              </p>
+            </div>
           </form>
         </CardContent>
       </Card>

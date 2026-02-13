@@ -45,13 +45,20 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const registerMutation = useMutation({
     mutationFn: authApi.register,
     onSuccess: (data) => {
+      console.log('Registration successful:', data.user);
       setUser(data.user);
       queryClient.setQueryData(["auth", "profile"], data.user);
       toast.success(data.message || "Account created successfully!");
-      const route = data.user.role === "admin" ? "/admin/dashboard" : "/customer/dashboard";
-      navigate(route, { replace: true });
+      
+      // Small delay to ensure state is updated before navigation
+      setTimeout(() => {
+        const route = data.user.role === "admin" ? "/admin/dashboard" : "/customer/dashboard";
+        console.log('Navigating to:', route, 'User role:', data.user.role);
+        navigate(route, { replace: true });
+      }, 100);
     },
     onError: (error: any) => {
+      console.error('Registration error:', error);
       toast.error(
         error.response?.data?.message ||
           error.message ||
@@ -64,13 +71,20 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const loginMutation = useMutation({
     mutationFn: authApi.login,
     onSuccess: (data) => {
+      console.log('Login successful:', data.user);
       setUser(data.user);
       queryClient.setQueryData(["auth", "profile"], data.user);
       toast.success(data.message);
-      const route = data.user.role === "admin" ? "/admin/dashboard" : "/customer/dashboard";
-      navigate(route, { replace: true });
+      
+      // Small delay to ensure state is updated before navigation
+      setTimeout(() => {
+        const route = data.user.role === "admin" ? "/admin/dashboard" : "/customer/dashboard";
+        console.log('Navigating to:', route, 'User role:', data.user.role);
+        navigate(route, { replace: true });
+      }, 100);
     },
     onError: (error: any) => {
+      console.error('Login error:', error);
       toast.error(error.response?.data?.message || error.message || "Login failed. Please try again.");
     },
   });
@@ -82,7 +96,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       setUser(null);
       queryClient.clear();
       toast.success(data.message || "Logged out successfully!");
-      navigate("/login-form", { replace: true });
+      navigate("/", { replace: true });
     },
     onError: (error: any) => {
       toast.error(error.message || "Logout failed.");

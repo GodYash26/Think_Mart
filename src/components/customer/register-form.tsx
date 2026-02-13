@@ -2,6 +2,8 @@
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useAuth } from "@/hooks/useAuth";
+import { useState, useEffect } from "react";
+import { useSearchParams } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import {
   Form,
@@ -14,18 +16,29 @@ import {
 import { Input } from "@/components/ui/input";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { loginSchema } from "@/validations/auth";
-import type { LoginFormValues, RegisterFormValues   } from "@/validations/register";
+import type { RegisterFormValues } from "@/validations/register";
+import type { LoginFormData } from "@/validations/auth";
 import { registerSchema } from "@/validations/register";
+import { loginSchema } from "@/validations/auth";
 
+interface SignInFormProps {
+  initialTab?: "signin" | "signup";
+}
 
+export default function RegisterForm({ initialTab = "signin" }: SignInFormProps) {
+  const { register, login } = useAuth();
+  const [searchParams] = useSearchParams();
+  const [activeTab, setActiveTab] = useState<"signin" | "signup">(initialTab);
 
+  // Get tab from URL parameter (signin or signup)
+  useEffect(() => {
+    const tabParam = searchParams.get("tab") as "signin" | "signup";
+    if (tabParam === "signup" || tabParam === "signin") {
+      setActiveTab(tabParam);
+    }
+  }, [searchParams]);
 
-
-export default function SignInForm() {
-  const { login, register } = useAuth();
-  
-  const loginForm = useForm<LoginFormValues>({
+  const loginForm = useForm<LoginFormData>({
     resolver: zodResolver(loginSchema),
     defaultValues: {
       email: "",
@@ -47,8 +60,12 @@ export default function SignInForm() {
   const isLoginLoading = loginForm.formState.isSubmitting;
   const isRegisterLoading = registerForm.formState.isSubmitting;
 
-  const onLoginSubmit = async (data: LoginFormValues) => {
-    await login(data);
+  const onLoginSubmit = async (data: LoginFormData) => {
+    try {
+      await login(data);
+    } catch (error) {
+      console.error("Login error:", error);
+    }
   };
 
   const onRegisterSubmit = async (data: RegisterFormValues) => {
@@ -56,12 +73,12 @@ export default function SignInForm() {
   };
 
   return (
-    <Card className="max-w-md mx-auto mt-10 shadow-xl">
+    <Card className="w-full shadow-xl">
       <CardHeader>
         <CardTitle>Welcome</CardTitle>
       </CardHeader>
       <CardContent>
-        <Tabs defaultValue="signin" className="w-full">
+        <Tabs value={activeTab} onValueChange={(value) => setActiveTab(value as "signin" | "signup")} className="w-full">
           <TabsList className="grid w-full grid-cols-2">
             <TabsTrigger value="signin">Sign In</TabsTrigger>
             <TabsTrigger value="signup">Sign Up</TabsTrigger>
@@ -108,7 +125,7 @@ export default function SignInForm() {
 
                 <Button
                   type="submit"
-                  className="w-full"
+                  className="w-full bg-[#76BA2C] hover:bg-[#65a524]"
                   disabled={isLoginLoading}
                 >
                   {isLoginLoading ? "Signing in..." : "Sign In"}
@@ -212,7 +229,7 @@ export default function SignInForm() {
 
                 <Button
                   type="submit"
-                  className="w-full"
+                  className="w-full bg-[#76BA2C] hover:bg-[#65a524]"
                   disabled={isRegisterLoading}
                 >
                   {isRegisterLoading ? "Creating..." : "Create Account"}

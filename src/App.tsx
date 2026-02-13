@@ -11,9 +11,12 @@ import { ProfilePage } from './pages/admin/profile'
 import { AdminProductsPage } from './pages/admin/products'
 import { AdminProductDetailsPage } from './pages/admin/product-details'
 import LoginForm from './auth/login-form'
+import AuthEntry from './auth/auth-entry'
 import { AuthProvider } from './hooks/useAuth'
 import { ProtectedRoute } from './components/protected-route'
 import { UserRole } from './types/auth'
+import RegisterForm from './components/customer/register-form'
+import CustomerDashboard from './pages/customer-dashboard'
 
 function App() {
   return (
@@ -37,7 +40,23 @@ function App() {
               </MainLayout>
             }
           />
-          <Route path='login-form' element={<LoginForm />} />
+          <Route path='/auth' element={<AuthEntry />} />
+          <Route path='/login' element={<LoginForm />} />
+          <Route path='/register' element={<RegisterForm />} />
+          
+          {/* Customer Routes */}
+          <Route
+            path='/customer/dashboard'
+            element={
+              <ProtectedRoute allowedRoles={[UserRole.CUSTOMER]}>
+                <MainLayout>
+                  <CustomerDashboard />
+                </MainLayout>
+              </ProtectedRoute>
+            }
+          />
+
+          {/* Admin Routes */}
           <Route
             path='admin/'
             element={
