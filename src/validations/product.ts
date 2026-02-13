@@ -61,7 +61,6 @@ export type CreateProductFormValues = {
     totalStock?: number | string
     isActive?: boolean
     isFeatured?: boolean
-    isPopular?: boolean
     isOffer?: boolean
 }
 

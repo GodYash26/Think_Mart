@@ -1,5 +1,5 @@
 export const UserRole = {
-  USER: "user",
+  CUSTOMER: "customer",
   ADMIN: "admin",
 } as const;
 
@@ -9,12 +9,24 @@ export interface User {
   id: string;
   email: string;
   fullname: string;
+  address?: string;
+  phone?: string;
   role: UserRole;
+  provider?: string;
   createdAt?: string;
+  updatedAt?: string;
 }
 
 export interface LoginCredentials {
   email: string;
+  password: string;
+}
+
+export interface RegisterCredentials {
+  fullname: string;
+  email: string;
+  address: string;
+  phone: string;
   password: string;
 }
 
@@ -27,6 +39,7 @@ export interface AuthContextType {
   user: User | null;
   isLoading: boolean;
   isAuthenticated: boolean;
+  register: (credentials: RegisterCredentials) => Promise<void>;
   login: (credentials: LoginCredentials) => Promise<void>;
   logout: () => Promise<void>;
   refetchUser: () => Promise<void>;

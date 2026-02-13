@@ -44,7 +44,6 @@ export function ProductsTable({
             <TableHead>Delivery Charge</TableHead>
             <TableHead>Total Stock</TableHead>
             <TableHead>Remaining Stock</TableHead>
-            <TableHead>Status</TableHead>
             <TableHead>Featured</TableHead>
             <TableHead>Offer</TableHead>
             <TableHead className="text-right">Actions</TableHead>
@@ -83,9 +82,7 @@ export function ProductsTable({
                 <TableCell>{product.deliveryCharge ?? "-"}</TableCell>
                 <TableCell>{formatStock(product.totalStock)}</TableCell>
                 <TableCell>{formatStock(product.remainingStock)}</TableCell>
-                <TableCell>
-                  {product.isActive === false ? "Inactive" : "Active"}
-                </TableCell>
+                
                 <TableCell>
                   <Checkbox
                     checked={product.isFeatured ?? false}

@@ -62,7 +62,6 @@ export function ProductForm({
       totalStock: undefined,
       isActive: true,
       isFeatured: false,
-      isPopular: false,
       isOffer: false,
       ...initialValues,
     },

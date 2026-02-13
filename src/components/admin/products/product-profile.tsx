@@ -90,12 +90,7 @@ export function ProductProfile({ product }: ProductProfileProps) {
             {product.isFeatured ? "Yes" : "No"}
           </div>
         </div>
-        <div>
-          <div className="text-sm text-muted-foreground">Popular</div>
-          <div className="font-medium">
-            {product.isPopular ? "Yes" : "No"}
-          </div>
-        </div>
+        
         <div>
           <div className="text-sm text-muted-foreground">Offer</div>
           <div className="font-medium">

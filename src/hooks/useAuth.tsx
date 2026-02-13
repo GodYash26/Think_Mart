@@ -8,7 +8,7 @@ import {
 import { useNavigate } from "react-router-dom";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
-import { authApi } from "@/lib/api/auth";
+import { authApi, type RegisterCredentials } from "@/lib/api/auth";
 import type { AuthContextType, LoginCredentials, User } from "@/types/auth";
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -41,6 +41,25 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     }
   }, [profileData]);
 
+  // Register mutation
+  const registerMutation = useMutation({
+    mutationFn: authApi.register,
+    onSuccess: (data) => {
+      setUser(data.user);
+      queryClient.setQueryData(["auth", "profile"], data.user);
+      toast.success(data.message || "Account created successfully!");
+      const route = data.user.role === "admin" ? "/admin/dashboard" : "/customer/dashboard";
+      navigate(route, { replace: true });
+    },
+    onError: (error: any) => {
+      toast.error(
+        error.response?.data?.message ||
+          error.message ||
+          "Registration failed. Please try again."
+      );
+    },
+  });
+
   // Login mutation
   const loginMutation = useMutation({
     mutationFn: authApi.login,
@@ -48,10 +67,11 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       setUser(data.user);
       queryClient.setQueryData(["auth", "profile"], data.user);
       toast.success(data.message);
-      navigate("/admin/dashboard", { replace: true });
+      const route = data.user.role === "admin" ? "/admin/dashboard" : "/customer/dashboard";
+      navigate(route, { replace: true });
     },
     onError: (error: any) => {
-      toast.error(error.message || "Login failed. Please try again.");
+      toast.error(error.response?.data?.message || error.message || "Login failed. Please try again.");
     },
   });
 
@@ -69,6 +89,10 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     },
   });
 
+  const register = async (credentials: RegisterCredentials) => {
+    await registerMutation.mutateAsync(credentials);
+  };
+
   const login = async (credentials: LoginCredentials) => {
     await loginMutation.mutateAsync(credentials);
   };
@@ -85,6 +109,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     user,
     isLoading,
     isAuthenticated: !!user,
+    register,
     login,
     logout,
     refetchUser: handleRefetchUser,
