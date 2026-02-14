@@ -3,7 +3,7 @@ import { ProductFilters } from './components/product-filters';
 import { ProductsGrid } from './components/products-grid';
 import { ActiveFilters } from './components/active-filters';
 import SearchBar from '@/components/header/search';
-import { useProducts } from '@/hooks/products/useProducts';
+import { useProduct } from '@/hooks/products/useProduct';
 import { useCategories } from '@/hooks/categories/useCategories';
 
 export function ProductsPage() {
@@ -27,7 +27,8 @@ export function ProductsPage() {
         [searchQuery, selectedCategory, priceRange, page, limit]
     );
 
-    const { data, isLoading, error } = useProducts(queryParams);
+    const { getProducts } = useProduct(undefined, queryParams);
+    const { data, isLoading, error } = getProducts;
     const products = data?.products ?? [];
     const total = data?.total ?? 0;
     const totalPages = Math.max(1, Math.ceil(total / limit));

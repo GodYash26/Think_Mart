@@ -1,6 +1,6 @@
 import { useMemo } from "react"
 import { ProductCard } from "@/components/product_card"
-import { useProducts } from "@/hooks/products/useProducts"
+import { useProduct } from "@/hooks/products/useProduct"
 import type { ProductListParams } from "@/types/product"
 
 interface FlaggedProductsSectionProps {
@@ -28,7 +28,8 @@ export function FlaggedProductsSection({
     [queryParams, limit]
   )
 
-  const { data, isLoading } = useProducts(params)
+  const { getProducts } = useProduct(undefined, params)
+  const { data, isLoading } = getProducts
   const products = data?.products ?? []
 
   return (

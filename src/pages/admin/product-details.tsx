@@ -4,8 +4,6 @@ import { Button } from "@/components/ui/button"
 import { ProductProfile } from "@/components/admin/products/product-profile"
 import { ProductForm } from "@/components/admin/products/product-form"
 import { useProduct } from "@/hooks/products/useProduct"
-import { useUpdateProduct } from "@/hooks/products/useUpdateProduct"
-import { useDeleteProduct } from "@/hooks/products/useDeleteProduct"
 import type { CreateProductFormData } from "@/validations/product"
 
 const cleanPayload = (values: CreateProductFormData) => {
@@ -17,9 +15,8 @@ const cleanPayload = (values: CreateProductFormData) => {
 export function AdminProductDetailsPage() {
   const { id } = useParams()
   const navigate = useNavigate()
-  const { data: product, isLoading } = useProduct(id)
-  const updateMutation = useUpdateProduct(id)
-  const deleteMutation = useDeleteProduct()
+  const { updateProduct: updateMutation, deleteProduct: deleteMutation, getProducts } = useProduct(id as string)
+  const { data: product, isLoading } = getProducts
 
   const initialValues = useMemo(() => {
     if (!product) {
@@ -41,7 +38,6 @@ export function AdminProductDetailsPage() {
       soldQuantity: product.soldQuantity,
       isActive: product.isActive,
       isFeatured: product.isFeatured,
-      isPopular: product.isPopular,
       isOffer: product.isOffer,
       isDeleted: product.isDeleted,
     }

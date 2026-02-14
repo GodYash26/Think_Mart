@@ -5,7 +5,8 @@ import { PublicProductProfile } from "./components/public-product-profile"
 
 export function ProductDetailsPage() {
   const { id } = useParams()
-  const { data: product, isLoading } = useProduct(id)
+  const { getProducts } = useProduct(id as string)
+  const { data: product, isLoading } = getProducts
 
   return (
     <div className="min-h-screen bg-gray-50">

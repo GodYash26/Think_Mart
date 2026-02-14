@@ -72,7 +72,6 @@ apiClient.interceptors.response.use(
   async (error: AxiosError) => {
     const originalRequest = error.config as RetryableRequestConfig | undefined;
 
-    // Only try to refresh non-public, non-auth endpoints
     if (
       error.response?.status === 401 &&
       originalRequest &&
@@ -90,9 +89,7 @@ apiClient.interceptors.response.use(
       }
     }
 
-    // Don't redirect for 401 on public endpoints - just return the error
     if (error.response?.status === 401) {
-      // Only redirect if it's NOT a public endpoint
       if (!isPublicEndpoint(originalRequest?.url)) {
         redirectToHomeIfProtectedPath();
       }

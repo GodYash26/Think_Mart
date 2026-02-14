@@ -12,8 +12,7 @@ import {
   SelectValue,
 } from "@/components/ui/select"
 import { ProductsTable } from "@/components/admin/products/products-table"
-import { useProducts } from "@/hooks/products/useProducts"
-import { useDeleteProduct } from "@/hooks/products/useDeleteProduct"
+import { useProduct } from "@/hooks/products/useProduct"
 import { useCategories } from "@/hooks/categories/useCategories"
 import { productApi } from "@/lib/api/product"
 import type { UpdateProductInput } from "@/types/product"
@@ -34,9 +33,10 @@ export function AdminProductsPage() {
     [search, category, page, limit]
   )
 
-  const { data, isLoading } = useProducts(queryParams)
+  const { getProducts } = useProduct(undefined, queryParams)
+  const { data, isLoading } = getProducts
   const { data: categories = [] } = useCategories()
-  const deleteMutation = useDeleteProduct()
+  const { deleteProduct: deleteMutation } = useProduct()
   const queryClient = useQueryClient()
 
   const statusMutation = useMutation({

@@ -50,7 +50,7 @@ export const useGetCart = (enabled: boolean = true) => {
   return useQuery({
     queryKey: ["cart"],
     queryFn: cartApi.getCart,
-    staleTime: 1 * 60 * 1000, // 1 minute
+    staleTime: 1 * 60 * 1000, 
     retry: false,
     enabled,
   });

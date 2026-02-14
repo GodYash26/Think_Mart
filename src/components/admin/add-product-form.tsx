@@ -1,10 +1,10 @@
 
 import { ProductForm } from "@/components/admin/products/product-form"
-import { useCreateProduct } from "@/hooks/useCreateProduct"
+import { useProduct } from "@/hooks/products/useProduct"
 import type { CreateProductFormData } from "@/validations/product"
 
 export function AddProductForm() {
-  const createProductMutation = useCreateProduct()
+  const { createProduct: createProductMutation } = useProduct()
   const isLoading = createProductMutation.isPending
 
   async function onSubmit(values: CreateProductFormData) {
