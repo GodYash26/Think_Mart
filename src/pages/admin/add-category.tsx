@@ -34,11 +34,6 @@ export const AddCategoryPage = () => {
         <div className="rounded-lg border bg-card p-6 shadow-sm">
           <AddCategoryForm
             categoryId={editingCategory?.id}
-            initialData={
-              editingCategory
-                ? { category_name: editingCategory.category_name }
-                : undefined
-            }
             onSuccess={handleFormSuccess}
           />
           {editingCategory && (
