@@ -82,7 +82,7 @@ export function PublicProductProfile({ product }: PublicProductProfileProps) {
     }
 
     addToCart({
-      productId: product._id,
+      productId: product._id!,
       quantity,
     })
   }
@@ -462,7 +462,7 @@ export function PublicProductProfile({ product }: PublicProductProfileProps) {
           open={orderDialogOpen}
           onOpenChange={setOrderDialogOpen}
           product={{
-            id: product._id,
+            id: product._id!,
             name: product.productName,
             price: priceAfterDiscount,
             image: product.imageUrl ?? product.images,

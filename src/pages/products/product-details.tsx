@@ -2,11 +2,13 @@ import { Link, useParams } from "react-router-dom"
 import { Button } from "@/components/ui/button"
 import { useProduct } from "@/hooks/products/useProduct"
 import { PublicProductProfile } from "./components/public-product-profile"
+import type { Product } from "@/types/product"
 
 export function ProductDetailsPage() {
   const { id } = useParams()
   const { getProducts } = useProduct(id as string)
-  const { data: product, isLoading } = getProducts
+  const { data, isLoading } = getProducts
+  const product = data as Product | undefined
 
   return (
     <div className="min-h-screen bg-gray-50">

@@ -64,8 +64,8 @@ export function ProductsGrid({
                     discountPercentage={product.discountPercentage || 0}
                     deliveryCharge={product.deliveryCharge ?? 0}
                     unit={product.unit}
-                    href={`/products/${product._id}`}
-                    onToggleFavorite={(isFavorite) => onToggleFavorite?.(product._id, isFavorite)}
+                    href={`/products/${product._id!}`}
+                    onToggleFavorite={(isFavorite) => onToggleFavorite?.(product._id!, isFavorite)}
                 />
             ))}
         </div>

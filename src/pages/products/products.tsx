@@ -5,6 +5,7 @@ import { ActiveFilters } from './components/active-filters';
 import SearchBar from '@/components/header/search';
 import { useProduct } from '@/hooks/products/useProduct';
 import { useCategories } from '@/hooks/categories/useCategories';
+import type { ProductListResponse, Product } from '@/types/product';
 
 export function ProductsPage() {
     const [searchQuery, setSearchQuery] = useState('');
@@ -29,8 +30,9 @@ export function ProductsPage() {
 
     const { getProducts } = useProduct(undefined, queryParams);
     const { data, isLoading, error } = getProducts;
-    const products = data?.products ?? [];
-    const total = data?.total ?? 0;
+    const productList = data as ProductListResponse | undefined;
+    const products = productList?.products ?? [];
+    const total = productList?.total ?? 0;
     const totalPages = Math.max(1, Math.ceil(total / limit));
 
     const maxPrice = useMemo(() => {
@@ -39,7 +41,7 @@ export function ProductsPage() {
         }
 
         const max = Math.max(
-            ...products.map((product) => product.discountedPrice ?? product.originalPrice)
+            ...products.map((product: Product) => product.discountedPrice ?? product.originalPrice)
         );
 
         return Math.max(max, 100);

@@ -5,6 +5,7 @@ import { ProductProfile } from "@/components/admin/products/product-profile"
 import { ProductForm } from "@/components/admin/products/product-form"
 import { useProduct } from "@/hooks/products/useProduct"
 import type { CreateProductFormData } from "@/validations/product"
+import type { Product } from "@/types/product"
 
 const cleanPayload = (values: CreateProductFormData) => {
   return Object.fromEntries(
@@ -16,7 +17,8 @@ export function AdminProductDetailsPage() {
   const { id } = useParams()
   const navigate = useNavigate()
   const { updateProduct: updateMutation, deleteProduct: deleteMutation, getProducts } = useProduct(id as string)
-  const { data: product, isLoading } = getProducts
+  const { data, isLoading } = getProducts
+  const product = data as Product | undefined
 
   const initialValues = useMemo(() => {
     if (!product) {

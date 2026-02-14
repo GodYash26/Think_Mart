@@ -1,15 +1,14 @@
 import { useMutation, useQuery, useQueryClient,  } from "@tanstack/react-query"
 import { productApi } from "@/lib/api/product"
 import { toast } from "sonner"
-import type { CreateProductInput, UpdateProductInput, ProductListResponse, ProductListParams } from "@/types/product"
+import type { CreateProductInput, UpdateProductInput, ProductListResponse, ProductListParams, Product } from "@/types/product"
 import { useNavigate } from "react-router-dom"
 
-
-export function useProduct(id?: string | undefined, queryParams?: ProductListParams) {
+export function useProduct(id?: string, queryParams?: ProductListParams) {
   const queryClient = useQueryClient()
   const navigate = useNavigate()
 
-  const getProducts = useQuery<ProductListResponse>({
+  const getProducts = useQuery<Product | ProductListResponse>({
     queryKey: ["product", id, queryParams],
     queryFn: async () => {
       if (id) {
@@ -18,7 +17,7 @@ export function useProduct(id?: string | undefined, queryParams?: ProductListPar
       return await productApi.list(queryParams)
     },
     enabled: Boolean(id) || Boolean(queryParams),
-  } as any)
+  })
 
   const createProduct = useMutation({
     mutationFn: (data: CreateProductInput) => productApi.create(data),
@@ -44,7 +43,7 @@ export function useProduct(id?: string | undefined, queryParams?: ProductListPar
   })
 
   const deleteProduct = useMutation({
-    mutationFn: (id: string) => productApi.remove(id),
+    mutationFn: (productId: string) => productApi.remove(productId),
     onSuccess: () => {
       toast.success("Product deleted successfully")
       queryClient.invalidateQueries({ queryKey: ["product"] })

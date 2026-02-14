@@ -1,7 +1,7 @@
 import { useMemo } from "react"
 import { ProductCard } from "@/components/product_card"
 import { useProduct } from "@/hooks/products/useProduct"
-import type { ProductListParams } from "@/types/product"
+import type { ProductListParams, ProductListResponse, Product } from "@/types/product"
 
 interface FlaggedProductsSectionProps {
   title: string
@@ -30,7 +30,8 @@ export function FlaggedProductsSection({
 
   const { getProducts } = useProduct(undefined, params)
   const { data, isLoading } = getProducts
-  const products = data?.products ?? []
+  const productList = data as ProductListResponse | undefined
+  const products = productList?.products ?? []
 
   return (
     <section className="w-full py-12">
@@ -56,7 +57,7 @@ export function FlaggedProductsSection({
           </div>
         ) : (
           <div className={gridClassName}>
-            {products.map((product) => (
+            {products.map((product: Product) => (
               <ProductCard
                 key={product._id}
                 _id={product._id}

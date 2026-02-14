@@ -61,26 +61,6 @@ export interface ProductListParams {
 }
 
 export interface ProductListResponse {
-  productName: string
-  description?: string
-  images?: string
-  imageUrl?: string
-  originalPrice: number
-  discountedPrice?: number
-  priceAfterDiscount?: number
-  discountPercentage?: number
-  deliveryCharge?: number 
-  category: string
-  categoryName?: string
-  rating?: number
-  unit: string
-  totalStock?: number
-  remainingStock?: number
-  soldQuantity?: number
-  isActive?: boolean
-  isFeatured?: boolean
-  isOffer?: boolean
-  isDeleted?: boolean
   products: Product[]
   total: number
   page: number

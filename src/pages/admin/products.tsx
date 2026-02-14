@@ -15,7 +15,7 @@ import { ProductsTable } from "@/components/admin/products/products-table"
 import { useProduct } from "@/hooks/products/useProduct"
 import { useCategories } from "@/hooks/categories/useCategories"
 import { productApi } from "@/lib/api/product"
-import type { UpdateProductInput } from "@/types/product"
+import type { UpdateProductInput, ProductListResponse } from "@/types/product"
 
 export function AdminProductsPage() {
   const [search, setSearch] = useState("")
@@ -35,6 +35,7 @@ export function AdminProductsPage() {
 
   const { getProducts } = useProduct(undefined, queryParams)
   const { data, isLoading } = getProducts
+  const productList = data as ProductListResponse | undefined
   const { data: categories = [] } = useCategories()
   const { deleteProduct: deleteMutation } = useProduct()
   const queryClient = useQueryClient()
@@ -51,8 +52,8 @@ export function AdminProductsPage() {
     },
   })
 
-  const products = data?.products ?? []
-  const total = data?.total ?? 0
+  const products = productList?.products ?? []
+  const total = productList?.total ?? 0
   const totalPages = Math.max(1, Math.ceil(total / limit))
 
   useEffect(() => {
@@ -125,7 +126,7 @@ export function AdminProductsPage() {
           <ProductsTable
             products={products}
             onDelete={handleDelete}
-            isDeletingId={deleteMutation.variables ?? null}
+            isDeletingId={(deleteMutation.variables as string) ?? null}
             isUpdatingId={statusMutation.variables?.id ?? null}
             onStatusChange={handleStatusChange}
           />
