@@ -208,10 +208,9 @@ export function OrderDialog({
                 <SelectValue />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="Cash on Delivery">Cash on Delivery</SelectItem>
-                <SelectItem value="Credit Card">Credit Card</SelectItem>
-                <SelectItem value="Debit Card">Debit Card</SelectItem>
-                <SelectItem value="UPI">UPI</SelectItem>
+                <SelectItem value="Cash on Delivery">Cash on Delivery (Available Now)</SelectItem>
+                <SelectItem disabled value="Credit Card">Credit Card (Available Soon)</SelectItem>
+                <SelectItem disabled value="Esewa">Esewa (Available Soon)</SelectItem>
               </SelectContent>
             </Select>
           </div>

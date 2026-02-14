@@ -170,19 +170,29 @@ export function ProductCard({
                         )}
 
                         {/* Price Section */}
-                        <div className=" flex gap-2 mb-3">
-                            <div className=" mb-1">
-                                <span className="text-sm text-gray-400 line-through font-medium">
-                                    ${originalPrice.toFixed(2)}
-                                </span>
-                            </div>
-
-                            <div className="flex items-baseline gap-2 mb-1">
-                                <span className="text-lg font-bold text-green-600">
-                                    ${(originalPrice - (discountedPrice || 0)).toFixed(2)}
-                                </span>
-                                <span className="text-xs text-gray-500">{unit}</span>
-                            </div>
+                        <div className="flex gap-2 mb-3">
+                            {discountedPrice && discountedPrice > 0 ? (
+                                <>
+                                    <div className="mb-1">
+                                        <span className="text-sm text-gray-400 line-through font-medium">
+                                            ${originalPrice.toFixed(2)}
+                                        </span>
+                                    </div>
+                                    <div className="flex items-baseline gap-2 mb-1">
+                                        <span className="text-lg font-bold text-green-600">
+                                            ${(originalPrice - discountedPrice).toFixed(2)}
+                                        </span>
+                                        <span className="text-xs text-gray-500">{unit}</span>
+                                    </div>
+                                </>
+                            ) : (
+                                <div className="flex items-baseline gap-2 mb-1">
+                                    <span className="text-lg font-bold text-green-600">
+                                        ${originalPrice.toFixed(2)}
+                                    </span>
+                                    <span className="text-xs text-gray-500">{unit}</span>
+                                </div>
+                            )}
                         </div>
 
                         {/* Delivery Charge */}

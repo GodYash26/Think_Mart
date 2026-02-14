@@ -87,7 +87,9 @@ export function PublicProductProfile({ product }: PublicProductProfileProps) {
     })
   }
 
-  const priceAfterDiscount = product.priceAfterDiscount || (product.originalPrice - (product.discountedPrice || 0))
+  const priceAfterDiscount = product.discountedPrice && product.discountedPrice > 0 
+    ? product.originalPrice - product.discountedPrice 
+    : product.originalPrice
 
   return (
     <>
@@ -121,32 +123,44 @@ export function PublicProductProfile({ product }: PublicProductProfileProps) {
 
             <div className="rounded-xl border border-gray-200 bg-white p-5">
               <div className="space-y-2">
-                <div className="flex items-baseline gap-2">
-                  <span className="text-sm text-gray-500">Original Price:</span>
-                  <span className="text-sm text-gray-400 line-through font-medium">
-                    ${formatValue(product.originalPrice)}
-                  </span>
-                </div>
-                {product.discountedPrice && product.discountedPrice > 0 && (
+                {product.discountedPrice && product.discountedPrice > 0 ? (
+                  <>
+                    <div className="flex items-baseline gap-2">
+                      <span className="text-sm text-gray-500">Original Price:</span>
+                      <span className="text-sm text-gray-400 line-through font-medium">
+                        ${formatValue(product.originalPrice)}
+                      </span>
+                    </div>
+                    <div className="flex items-baseline gap-2">
+                      <span className="text-sm text-gray-500">Discount:</span>
+                      <span className="text-sm text-red-600 font-medium">
+                        -${product.discountedPrice.toFixed(2)}
+                      </span>
+                      {product.discountPercentage && product.discountPercentage > 0 && (
+                        <span className="text-xs text-red-600">({product.discountPercentage}% off)</span>
+                      )}
+                    </div>
+                    <div className="flex items-baseline gap-2">
+                      <span className="text-sm font-medium text-gray-700">Price After Discount:</span>
+                      <span className="text-2xl font-bold text-green-600">
+                        ${priceAfterDiscount.toFixed(2)}
+                      </span>
+                      <span className="text-sm text-gray-500">
+                        {product.unit ? `/${product.unit}` : ""}
+                      </span>
+                    </div>
+                  </>
+                ) : (
                   <div className="flex items-baseline gap-2">
-                    <span className="text-sm text-gray-500">Discount:</span>
-                    <span className="text-sm text-red-600 font-medium">
-                      -${product.discountedPrice.toFixed(2)}
+                    <span className="text-sm font-medium text-gray-700">Price:</span>
+                    <span className="text-2xl font-bold text-green-600">
+                      ${priceAfterDiscount.toFixed(2)}
                     </span>
-                    {product.discountPercentage && product.discountPercentage > 0 && (
-                      <span className="text-xs text-red-600">({product.discountPercentage}% off)</span>
-                    )}
+                    <span className="text-sm text-gray-500">
+                      {product.unit ? `/${product.unit}` : ""}
+                    </span>
                   </div>
                 )}
-                <div className="flex items-baseline gap-2">
-                  <span className="text-sm font-medium text-gray-700">Price After Discount:</span>
-                  <span className="text-2xl font-bold text-green-600">
-                    ${priceAfterDiscount.toFixed(2)}
-                  </span>
-                  <span className="text-sm text-gray-500">
-                    {product.unit ? `/${product.unit}` : ""}
-                  </span>
-                </div>
               </div>
               <div className="mt-3 text-sm text-gray-500">
                 Delivery: ${formatValue(product.deliveryCharge)}

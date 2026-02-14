@@ -58,6 +58,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       setUser(data.user);
       queryClient.setQueryData(["auth", "profile"], data.user);
       toast.success(data.message || "Account created successfully!");
+      setAuthSheetOpen(false);
 
       setTimeout(() => {
         const route =
@@ -83,6 +84,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       setUser(data.user);
       queryClient.setQueryData(["auth", "profile"], data.user);
       toast.success(data.message);
+      setAuthSheetOpen(false);
 
       setTimeout(() => {
         const route =

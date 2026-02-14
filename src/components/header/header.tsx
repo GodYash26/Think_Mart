@@ -36,9 +36,9 @@ const Header: React.FC = () => {
     return (
         <header className="w-full bg-white shadow-xs sticky top-0 z-50">
             <div className="mx-auto flex w-full max-w-7xl flex-col gap-4 px-4 py-3 sm:flex-row sm:items-center sm:justify-between sm:px-6 lg:px-8">
-                <div className="hidden lg:flex shrink-0 items-center text-2xl font-bold text-brand-green">
+                <div className="flex shrink-0 items-center text-2xl font-bold text-brand-green">
                     <Link to="/">
-                        <img src={logo} alt="Logo" className="h-12 w-12 sm:h-14 sm:w-14" />
+                        <img src={logo} alt="Logo" className="h-10 w-10 sm:h-12 sm:w-12 lg:h-14 lg:w-14" />
                     </Link>
                 </div>
                 <div className="flex-1 flex justify-center px-0 sm:px-4">

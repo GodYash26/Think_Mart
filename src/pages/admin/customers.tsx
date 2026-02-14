@@ -37,6 +37,7 @@ export function AdminCustomersPage() {
   }
 
   const users = data?.users || [];
+  const customers = users.filter((user: User) => user.role === "customer");
 
   return (
     <div className="p-8">
@@ -45,15 +46,15 @@ export function AdminCustomersPage() {
         <p className="text-gray-600">Manage and view all registered users</p>
       </div>
 
-      {users.length === 0 ? (
+      {customers.length === 0 ? (
         <div className="flex items-center justify-center min-h-75">
           <div className="text-center">
             <Users className="w-16 h-16 mx-auto text-gray-300 mb-4" />
             <h3 className="text-xl font-semibold text-gray-900 mb-2">
-              No users found
+              No customers found
             </h3>
             <p className="text-gray-600">
-              Users will appear here once they register.
+              Customers will appear here once they register.
             </p>
           </div>
         </div>
@@ -69,7 +70,7 @@ export function AdminCustomersPage() {
               </TableRow>
             </TableHeader>
             <TableBody>
-              {users.map((user: User) => (
+              {customers.map((user: User) => (
                 <TableRow key={user.id}>
                   <TableCell className="font-medium">{user.fullname}</TableCell>
                   <TableCell>{user.email}</TableCell>
