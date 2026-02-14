@@ -27,7 +27,7 @@ export function ProductsPage() {
         [searchQuery, selectedCategory, priceRange, page, limit]
     );
 
-    const { data, isLoading } = useProducts(queryParams);
+    const { data, isLoading, error } = useProducts(queryParams);
     const products = data?.products ?? [];
     const total = data?.total ?? 0;
     const totalPages = Math.max(1, Math.ceil(total / limit));
@@ -66,18 +66,14 @@ export function ProductsPage() {
         [categories]
     );
 
-    const handleAddToCart = (productId: string, quantity: number) => {
-        console.log(`Added ${quantity} of product ${productId} to cart`);
-    };
-
-    const handleToggleFavorite = (productId: string, isFavorite: boolean) => {
-        console.log(`Product ${productId} favorite status: ${isFavorite}`);
-    };
-
     const resetFilters = () => {
         setSearchQuery('');
         setSelectedCategory('All');
         setPriceRange([0, maxPrice]);
+    };
+
+    const handleToggleFavorite = (productId: string, isFavorite: boolean) => {
+        console.log(`Product ${productId} favorite status: ${isFavorite}`);
     };
 
     // Build active filters list
@@ -161,13 +157,14 @@ export function ProductsPage() {
                             </div>
                         </div>
 
-                        {/* Products Grid */}
-                        <ProductsGrid
-                            products={products}
-                            isLoading={isLoading}
-                            onAddToCart={handleAddToCart}
-                            onToggleFavorite={handleToggleFavorite}
-                        />
+                    {/* Products Grid */}
+                    <ProductsGrid
+                        products={products}
+                        isLoading={isLoading}
+                        error={error as Error | null}
+                        isError={!!error}
+                        onToggleFavorite={handleToggleFavorite}
+                    />
 
                         {/* Pagination */}
                         <div className="mt-8 flex flex-wrap items-center justify-between gap-3 text-sm text-gray-600">

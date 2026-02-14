@@ -1,21 +1,36 @@
 import { ProductCard } from '@/components/product_card';
 import type { Product } from '@/types/product';
+import { AlertCircle } from 'lucide-react';
 
 interface ProductsGridProps {
     products: Product[];
-    onAddToCart?: (productId: string, quantity: number) => void;
     onToggleFavorite?: (productId: string, isFavorite: boolean) => void;
     isLoading?: boolean;
+    isError?: boolean;
+    error?: Error | null;
     emptyMessage?: string;
 }
 
 export function ProductsGrid({
     products,
-    onAddToCart,
     onToggleFavorite,
     isLoading = false,
+    isError = false,
+    error = null,
     emptyMessage = "No products found. Try adjusting your filters.",
 }: ProductsGridProps) {
+    if (isError) {
+        return (
+            <div className="flex items-center justify-center py-12">
+                <div className="text-center space-y-3">
+                    <AlertCircle className="h-12 w-12 text-red-500 mx-auto" />
+                    <p className="text-red-600 text-lg font-semibold">Failed to load products</p>
+                    <p className="text-gray-500 text-sm">{error?.message || "Please try again later"}</p>
+                </div>
+            </div>
+        );
+    }
+
     if (isLoading) {
         return (
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -50,7 +65,6 @@ export function ProductsGrid({
                     deliveryCharge={product.deliveryCharge ?? 0}
                     unit={product.unit}
                     href={`/products/${product._id}`}
-                    onAddToCart={(quantity) => onAddToCart?.(product._id, quantity)}
                     onToggleFavorite={(isFavorite) => onToggleFavorite?.(product._id, isFavorite)}
                 />
             ))}

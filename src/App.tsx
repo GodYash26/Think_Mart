@@ -13,7 +13,6 @@ import { AdminProductsPage } from './pages/admin/products'
 import { AdminProductDetailsPage } from './pages/admin/product-details'
 import { AdminOrdersPage } from './pages/admin/orders'
 import { AdminCustomersPage } from './pages/admin/customers'
-import LoginForm from './auth/login-form'
 import AuthEntry from './auth/auth-entry'
 import { AuthProvider } from './hooks/useAuth'
 import { ProtectedRoute } from './components/protected-route'
@@ -44,8 +43,7 @@ function AppContent() {
             </MainLayout>
           }
         />
-        <Route
-          path="/products/:id"
+        <Route path="/products/:id"
           element={
             <MainLayout>
               <ProductDetailsPage />
@@ -53,8 +51,8 @@ function AppContent() {
           }
         />
         <Route path='/auth' element={<AuthEntry />} />
-        <Route path='/login' element={<LoginForm />} />
-        <Route path='/register' element={<RegisterForm />} />
+        <Route path='/login' element={<RegisterForm initialTab="signin" />} />
+        <Route path='/register' element={<RegisterForm initialTab="signup" />} />
         
         {/* Customer Routes */}
         <Route
@@ -106,6 +104,27 @@ function AppContent() {
           <Route path="customers" element={<AdminCustomersPage />} />
           <Route path="profile" element={<ProfilePage />} />
         </Route>
+
+        {/* 404 Not Found Route */}
+        <Route
+          path="*"
+          element={
+            <MainLayout>
+              <div className="min-h-screen flex items-center justify-center">
+                <div className="text-center">
+                  <h1 className="text-6xl font-bold text-gray-900 mb-4">404</h1>
+                  <p className="text-xl text-gray-600 mb-8">Page not found</p>
+                  <a
+                    href="/"
+                    className="inline-block px-6 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition"
+                  >
+                    Go back home
+                  </a>
+                </div>
+              </div>
+            </MainLayout>
+          }
+        />
       </Routes>
 
       {/* Global Auth Sheet */}

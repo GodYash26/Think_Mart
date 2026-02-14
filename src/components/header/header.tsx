@@ -14,11 +14,14 @@ import {
 import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "@/hooks/useAuth";
 import { User } from "lucide-react";
+import { useGetCart } from "@/lib/api/cart";
+import { CartDropdown } from "../cart-dropdown";
 
 const Header: React.FC = () => {
     const { isAuthenticated, user, logout, openAuthSheet } = useAuth();
     const navigate = useNavigate();
-    const [cartCount] = React.useState(6);
+    const { data: cartResponse } = useGetCart(isAuthenticated);
+    const cartCount = cartResponse?.cart?.items?.length ?? 0;
 
     // Get user initials from fullname
     const getInitials = (fullname: string) => {
@@ -53,11 +56,20 @@ const Header: React.FC = () => {
                                 )}
                             </Button>
                         </DropdownMenuTrigger>
-                        <DropdownMenuContent align="end" className="w-80">
-                            <div className="p-4 space-y-2">
-                                <h4 className="font-semibold text-sm">Shopping Cart</h4>
-                                <p className="text-sm text-gray-500">Your cart is empty</p>
-                            </div>
+                        <DropdownMenuContent align="end" className="w-full sm:max-w-sm p-0">
+                            {!isAuthenticated ? (
+                                <div className="p-4 space-y-2 text-center">
+                                    <p className="text-sm text-gray-600 mb-3">Sign in to view your cart</p>
+                                    <Button 
+                                        className="w-full bg-[#76BA2C] hover:bg-[#65a524] text-white text-sm"
+                                        onClick={() => openAuthSheet("signin")}
+                                    >
+                                        Sign In
+                                    </Button>
+                                </div>
+                            ) : (
+                                <CartDropdown />
+                            )}
                         </DropdownMenuContent>
                     </DropdownMenu>
 
@@ -69,8 +81,8 @@ const Header: React.FC = () => {
                         </DropdownMenuTrigger>
                         <DropdownMenuContent align="end" className="w-80">
                             <div className="p-4 space-y-2">
-                                <h4 className="font-semibold text-sm">Favorites</h4>
-                                <p className="text-sm text-gray-500">No favorites yet</p>
+                                <h4 className="font-semibold text-sm">Kaam hudai cha</h4>
+                                <p className="text-sm text-gray-500">Not Implemented yet</p>
                             </div>
                         </DropdownMenuContent>
                     </DropdownMenu>

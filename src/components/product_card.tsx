@@ -7,6 +7,8 @@ import { Button } from "./ui/button";
 import { Input } from "./ui/input";
 import { OrderDialog } from "./order-dialog";
 import { useAuth } from "@/hooks/useAuth";
+import { useAddToCart } from "@/lib/api/cart";
+import { toast } from "sonner";
 
 export interface ProductCardProps {
     _id?: string;
@@ -18,7 +20,6 @@ export interface ProductCardProps {
     deliveryCharge: number;
     unit?: string;
     href?: string;
-    onAddToCart?: (quantity: number) => void;
     onToggleFavorite?: (isFavorite: boolean) => void;
 }
 
@@ -32,7 +33,6 @@ export function ProductCard({
     deliveryCharge,
     unit = "/kg",
     href,
-    onAddToCart,
     onToggleFavorite,
 }: ProductCardProps) {
     const [quantity, setQuantity] = useState(1);
@@ -40,6 +40,7 @@ export function ProductCard({
     const [isFavorite, setIsFavorite] = useState(false);
     const [orderDialogOpen, setOrderDialogOpen] = useState(false);
     const { user, openAuthSheet } = useAuth();
+    const { mutate: addToCart, isPending: isAddingToCart } = useAddToCart();
 
     const handleIncrement = () => {
         const newQty = quantity + 1;
@@ -81,7 +82,25 @@ export function ProductCard({
     };
 
     const handleAddToCart = () => {
-        onAddToCart?.(quantity);
+        if (!user) {
+            openAuthSheet("signin");
+            return;
+        }
+
+        if (user.role !== "customer") {
+            toast.error("Only customers can add items to cart");
+            return;
+        }
+
+        if (!_id) {
+            toast.error("Product not found");
+            return;
+        }
+
+        addToCart({
+            productId: _id,
+            quantity,
+        });
     };
 
     const handleToggleFavorite = () => {
@@ -205,10 +224,15 @@ export function ProductCard({
                                 {/* Add to Cart Button */}
                                 <Button
                                     onClick={handleAddToCart}
-                                    className="w-10 h-10 rounded-full bg-green-600 hover:bg-green-700 flex items-center justify-center transition-colors"
+                                    disabled={isAddingToCart}
+                                    className="w-10 h-10 rounded-full bg-green-600 hover:bg-green-700 flex items-center justify-center transition-colors disabled:opacity-50"
                                     aria-label="Add to cart"
                                 >
-                                    <ShoppingCart className="w-4.5 h-4.5 text-white" />
+                                    {isAddingToCart ? (
+                                        <div className="w-4.5 h-4.5 border-2 border-white border-t-transparent rounded-full animate-spin" />
+                                    ) : (
+                                        <ShoppingCart className="w-4.5 h-4.5 text-white" />
+                                    )}
                                 </Button>
                             </div>
 

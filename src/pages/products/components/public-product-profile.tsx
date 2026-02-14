@@ -5,7 +5,9 @@ import { Input } from "@/components/ui/input"
 import { Card, CardContent } from "@/components/ui/card"
 import { OrderDialog } from "@/components/order-dialog"
 import { useAuth } from "@/hooks/useAuth"
-import { ShoppingBag, Minus, Plus, Star, User } from "lucide-react"
+import { ShoppingBag, Minus, Plus, Star, User, ShoppingCart } from "lucide-react"
+import { useAddToCart } from "@/lib/api/cart"
+import { toast } from "sonner"
 
 interface PublicProductProfileProps {
   product: Product
@@ -16,6 +18,7 @@ export function PublicProductProfile({ product }: PublicProductProfileProps) {
   const [quantity, setQuantity] = useState(1)
   const [quantityInput, setQuantityInput] = useState('1')
   const [orderDialogOpen, setOrderDialogOpen] = useState(false)
+  const { mutate: addToCart, isPending: isAddingToCart } = useAddToCart()
 
   const formatValue = (value?: string | number | null) =>
     value === null || value === undefined || value === "" ? "-" : value
@@ -65,6 +68,23 @@ export function PublicProductProfile({ product }: PublicProductProfileProps) {
       return
     }
     setOrderDialogOpen(true)
+  }
+
+  const handleAddToCart = () => {
+    if (!user) {
+      openAuthSheet("signin")
+      return
+    }
+
+    if (user.role !== "customer") {
+      toast.error("Only customers can add items to cart")
+      return
+    }
+
+    addToCart({
+      productId: product._id,
+      quantity,
+    })
   }
 
   const priceAfterDiscount = product.priceAfterDiscount || (product.originalPrice - (product.discountedPrice || 0))
@@ -194,13 +214,32 @@ export function PublicProductProfile({ product }: PublicProductProfileProps) {
                 </span>
               </div>
             </div>
-            <Button
-              onClick={handleOrderNow}
-              className="w-full bg-green-600 hover:bg-green-700 text-white h-12 text-lg"
-            >
-              <ShoppingBag className="w-5 h-5 mr-2" />
-              {user ? 'Order Now' : 'Login to Order'}
-            </Button>
+            <div className="space-y-3">
+              <Button
+                onClick={handleAddToCart}
+                disabled={isAddingToCart}
+                className="w-full bg-blue-600 hover:bg-blue-700 text-white h-12 text-base"
+              >
+                {isAddingToCart ? (
+                  <>
+                    <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin mr-2" />
+                    Adding...
+                  </>
+                ) : (
+                  <>
+                    <ShoppingCart className="w-5 h-5 mr-2" />
+                    Add to Cart
+                  </>
+                )}
+              </Button>
+              <Button
+                onClick={handleOrderNow}
+                className="w-full bg-green-600 hover:bg-green-700 text-white h-12 text-lg"
+              >
+                <ShoppingBag className="w-5 h-5 mr-2" />
+                {user ? 'Order Now' : 'Login to Order'}
+              </Button>
+            </div>
           </div>
         </div>
       </div>

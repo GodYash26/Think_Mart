@@ -135,10 +135,7 @@ export default function RegisterForm({ initialTab = "signin" }: SignInFormProps)
                   type="button"
                   variant="outline"
                   className="w-full"
-                  onClick={() =>
-                    (window.location.href =
-                      "http://localhost:3000/auth/google")
-                  }
+                  disabled
                 >
                   Continue with Google
                 </Button>
@@ -240,8 +237,8 @@ export default function RegisterForm({ initialTab = "signin" }: SignInFormProps)
                   variant="outline"
                   className="w-full"
                   onClick={() =>
-                    (window.location.href =
-                      "http://localhost:3000/auth/google")
+                  (window.location.href =
+                    "http://localhost:3000/auth/google")
                   }
                 >
                   Continue with Google
