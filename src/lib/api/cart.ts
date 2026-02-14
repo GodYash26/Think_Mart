@@ -44,7 +44,6 @@ export const cartApi = {
   },
 };
 
-// React Query Hooks
 
 export const useGetCart = (enabled: boolean = true) => {
   return useQuery({

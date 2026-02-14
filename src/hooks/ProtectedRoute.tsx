@@ -27,7 +27,6 @@ export function ProtectedRoute({
   }
 
   if (requiredRole && user.role !== requiredRole) {
-    // Redirect to appropriate dashboard based on user's role
     const route = user.role === "admin" ? "/admin/dashboard" : "/customer/dashboard";
     return <Navigate to={route} replace />;
   }
