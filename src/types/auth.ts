@@ -43,4 +43,10 @@ export interface AuthContextType {
   login: (credentials: LoginCredentials) => Promise<void>;
   logout: () => Promise<void>;
   refetchUser: () => Promise<void>;
+  authSheetOpen: boolean;
+  setAuthSheetOpen: (open: boolean) => void;
+  authTab: "signin" | "signup";
+  setAuthTab: (tab: "signin" | "signup") => void;
+  openAuthSheet: (tab?: "signin" | "signup") => void;
+  closeAuthSheet: () => void;
 }

@@ -1,5 +1,4 @@
 import { useState } from "react"
-import { useNavigate } from "react-router-dom"
 import type { Product } from "@/types/product"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
@@ -13,8 +12,7 @@ interface PublicProductProfileProps {
 }
 
 export function PublicProductProfile({ product }: PublicProductProfileProps) {
-  const { user } = useAuth()
-  const navigate = useNavigate()
+  const { user, openAuthSheet } = useAuth()
   const [quantity, setQuantity] = useState(1)
   const [quantityInput, setQuantityInput] = useState('1')
   const [orderDialogOpen, setOrderDialogOpen] = useState(false)
@@ -63,7 +61,7 @@ export function PublicProductProfile({ product }: PublicProductProfileProps) {
 
   const handleOrderNow = () => {
     if (!user) {
-      navigate('/login')
+      openAuthSheet("signin")
       return
     }
     setOrderDialogOpen(true)

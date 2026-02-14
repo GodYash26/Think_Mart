@@ -1,4 +1,4 @@
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { Heart, ShoppingCart, Minus, Plus, ShoppingBag } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -39,8 +39,7 @@ export function ProductCard({
     const [quantityInput, setQuantityInput] = useState('1');
     const [isFavorite, setIsFavorite] = useState(false);
     const [orderDialogOpen, setOrderDialogOpen] = useState(false);
-    const { user } = useAuth();
-    const navigate = useNavigate();
+    const { user, openAuthSheet } = useAuth();
 
     const handleIncrement = () => {
         const newQty = quantity + 1;
@@ -93,7 +92,7 @@ export function ProductCard({
 
     const handleOrderNow = () => {
         if (!user) {
-            navigate('/login');
+            openAuthSheet("signin");
             return;
         }
         setOrderDialogOpen(true);

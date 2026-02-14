@@ -11,28 +11,14 @@ import {
     DropdownMenuTrigger,
     DropdownMenuItem,
 } from "../ui/dropdown-menu";
-import {
-    Sheet,
-    SheetContent,
-} from "../ui/sheet";
 import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "@/hooks/useAuth";
 import { User } from "lucide-react";
-import RegisterForm from "../customer/register-form";
 
 const Header: React.FC = () => {
-    const { isAuthenticated, user, logout } = useAuth();
+    const { isAuthenticated, user, logout, openAuthSheet } = useAuth();
     const navigate = useNavigate();
     const [cartCount] = React.useState(6);
-    const [isAuthSheetOpen, setIsAuthSheetOpen] = React.useState(false);
-    const [authTab, setAuthTab] = React.useState<"signin" | "signup">("signin");
-
-    // Close auth sheet when user is authenticated
-    React.useEffect(() => {
-        if (isAuthenticated && user) {
-            setIsAuthSheetOpen(false);
-        }
-    }, [isAuthenticated, user]);
 
     // Get user initials from fullname
     const getInitials = (fullname: string) => {
@@ -42,11 +28,6 @@ const Header: React.FC = () => {
             .join("")
             .toUpperCase()
             .slice(0, 2);
-    };
-
-    const handleOpenAuthSheet = (tab: "signin" | "signup") => {
-        setAuthTab(tab);
-        setIsAuthSheetOpen(true);
     };
 
     return (
@@ -165,13 +146,13 @@ const Header: React.FC = () => {
                                     <Button 
                                         className="w-full border-[#76BA2C] text-[#76BA2C] hover:bg-[#76BA2C] hover:text-white"
                                         variant="outline"
-                                        onClick={() => handleOpenAuthSheet("signin")}
+                                        onClick={() => openAuthSheet("signin")}
                                     >
                                         Sign In
                                     </Button>
                                     <Button 
                                         className="w-full bg-[#76BA2C] hover:bg-[#65a524] text-white"
-                                        onClick={() => handleOpenAuthSheet("signup")}
+                                        onClick={() => openAuthSheet("signup")}
                                     >
                                         Sign Up
                                     </Button>
@@ -181,13 +162,6 @@ const Header: React.FC = () => {
                     </DropdownMenu>
                 </div>
             </div>
-
-            {/* Auth Sheet for Login/Register */}
-            <Sheet open={isAuthSheetOpen} onOpenChange={setIsAuthSheetOpen}>
-                <SheetContent side="right" className="w-full sm:max-w-md overflow-y-auto">
-                    <RegisterForm initialTab={authTab} />
-                </SheetContent>
-            </Sheet>
         </header>
     )
 }

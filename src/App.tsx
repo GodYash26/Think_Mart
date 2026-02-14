@@ -22,85 +22,107 @@ import RegisterForm from './components/customer/register-form'
 import CustomerDashboard from './pages/customer-dashboard'
 import { MyOrdersPage } from './pages/my-orders'
 import ProfilePageCustomer from './components/profile/profile-page'
+import { useAuth } from './hooks/useAuth'
+import {
+  Sheet,
+  SheetContent,
+} from './components/ui/sheet'
+
+function AppContent() {
+  const { authSheetOpen, setAuthSheetOpen, authTab } = useAuth()
+
+  return (
+    <>
+      <ScrollToTop />
+      <Routes>
+        <Route path="/" element={<HomePage />} />
+        <Route
+          path="/products"
+          element={
+            <MainLayout>
+              <ProductsPage />
+            </MainLayout>
+          }
+        />
+        <Route
+          path="/products/:id"
+          element={
+            <MainLayout>
+              <ProductDetailsPage />
+            </MainLayout>
+          }
+        />
+        <Route path='/auth' element={<AuthEntry />} />
+        <Route path='/login' element={<LoginForm />} />
+        <Route path='/register' element={<RegisterForm />} />
+        
+        {/* Customer Routes */}
+        <Route
+          path='/customer/dashboard'
+          element={
+            <ProtectedRoute allowedRoles={[UserRole.CUSTOMER]}>
+              <MainLayout>
+                <CustomerDashboard />
+              </MainLayout>
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path='/my-orders'
+          element={
+            <ProtectedRoute allowedRoles={[UserRole.CUSTOMER, UserRole.ADMIN]}>
+              <MainLayout>
+                <MyOrdersPage />
+              </MainLayout>
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path='/profile'
+          element={
+            <ProtectedRoute allowedRoles={[UserRole.CUSTOMER, UserRole.ADMIN]}>
+              <MainLayout>
+                <ProfilePageCustomer />
+              </MainLayout>
+            </ProtectedRoute>
+          }
+        />
+
+        {/* Admin Routes */}
+        <Route
+          path='admin/'
+          element={
+            <ProtectedRoute allowedRoles={[UserRole.ADMIN]}>
+              <DashboardLayout />
+            </ProtectedRoute>
+          }
+        >
+          <Route path="dashboard" element={<AdminDashboardPage />} />
+          <Route path="add-product" element={<AddProductPage />} />
+          <Route path="add-category" element={<AddCategoryPage />} />
+          <Route path="products" element={<AdminProductsPage />} />
+          <Route path="products/:id" element={<AdminProductDetailsPage />} />
+          <Route path="orders" element={<AdminOrdersPage />} />
+          <Route path="customers" element={<AdminCustomersPage />} />
+          <Route path="profile" element={<ProfilePage />} />
+        </Route>
+      </Routes>
+
+      {/* Global Auth Sheet */}
+      <Sheet open={authSheetOpen} onOpenChange={setAuthSheetOpen}>
+        <SheetContent side="right" className="w-full sm:max-w-md overflow-y-auto">
+          <RegisterForm initialTab={authTab} />
+        </SheetContent>
+      </Sheet>
+    </>
+  )
+}
 
 function App() {
   return (
     <Router>
       <AuthProvider>
-        <ScrollToTop />
-        <Routes>
-          <Route path="/" element={<HomePage />} />
-          <Route
-            path="/products"
-            element={
-              <MainLayout>
-                <ProductsPage />
-              </MainLayout>
-            }
-          />
-          <Route
-            path="/products/:id"
-            element={
-              <MainLayout>
-                <ProductDetailsPage />
-              </MainLayout>
-            }
-          />
-          <Route path='/auth' element={<AuthEntry />} />
-          <Route path='/login' element={<LoginForm />} />
-          <Route path='/register' element={<RegisterForm />} />
-          
-          {/* Customer Routes */}
-          <Route
-            path='/customer/dashboard'
-            element={
-              <ProtectedRoute allowedRoles={[UserRole.CUSTOMER]}>
-                <MainLayout>
-                  <CustomerDashboard />
-                </MainLayout>
-              </ProtectedRoute>
-            }
-          />
-          <Route
-            path='/my-orders'
-            element={
-              <ProtectedRoute allowedRoles={[UserRole.CUSTOMER, UserRole.ADMIN]}>
-                <MainLayout>
-                  <MyOrdersPage />
-                </MainLayout>
-              </ProtectedRoute>
-            }
-          />
-          <Route
-            path='/profile'
-            element={
-              <ProtectedRoute allowedRoles={[UserRole.CUSTOMER, UserRole.ADMIN]}>
-                <MainLayout>
-                  <ProfilePageCustomer />
-                </MainLayout>
-              </ProtectedRoute>
-            }
-          />
-
-          {/* Admin Routes */}
-          <Route
-            path='admin/'
-            element={
-              <ProtectedRoute allowedRoles={[UserRole.ADMIN]}>
-                <DashboardLayout />
-              </ProtectedRoute>
-            }
-          >
-            <Route path="dashboard" element={<AdminDashboardPage />} />
-            <Route path="add-product" element={<AddProductPage />} />
-            <Route path="add-category" element={<AddCategoryPage />} />
-            <Route path="products" element={<AdminProductsPage />} />
-            <Route path="products/:id" element={<AdminProductDetailsPage />} />
-            <Route path="orders" element={<AdminOrdersPage />} />
-            <Route path="customers" element={<AdminCustomersPage />} />
-            <Route path="profile" element={<ProfilePage />} />
-          </Route>
-        </Routes>
+        <AppContent />
       </AuthProvider>
     </Router>
   )

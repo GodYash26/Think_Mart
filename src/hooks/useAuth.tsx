@@ -16,6 +16,8 @@ const AuthContext = createContext<AuthContextType | undefined>(undefined);
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [user, setUser] = useState<User | null>(null);
   const [isInitializing, setIsInitializing] = useState(true);
+  const [authSheetOpen, setAuthSheetOpen] = useState(false);
+  const [authTab, setAuthTab] = useState<"signin" | "signup">("signin");
   const navigate = useNavigate();
   const queryClient = useQueryClient();
 
@@ -47,7 +49,6 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     };
 
     initializeAuth();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const registerMutation = useMutation({
@@ -129,6 +130,15 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     await refetchUser();
   };
 
+  const openAuthSheet = (tab: "signin" | "signup" = "signin") => {
+    setAuthTab(tab);
+    setAuthSheetOpen(true);
+  };
+
+  const closeAuthSheet = () => {
+    setAuthSheetOpen(false);
+  };
+
   const value: AuthContextType = {
     user,
     isLoading: isInitializing || isProfileLoading,
@@ -137,6 +147,12 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     login,
     logout,
     refetchUser: handleRefetchUser,
+    authSheetOpen,
+    setAuthSheetOpen,
+    authTab,
+    setAuthTab,
+    openAuthSheet,
+    closeAuthSheet,
   };
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
