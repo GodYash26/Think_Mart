@@ -45,7 +45,6 @@ const shouldTryRefresh = (config?: RetryableRequestConfig) => {
 const isPublicEndpoint = (url?: string) => {
   if (!url) return false;
   
-  // Public endpoints that don't require authentication
   const publicEndpoints = [
     "/products",
     "/categories",
