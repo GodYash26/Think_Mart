@@ -31,7 +31,10 @@ export function AddCategoryForm({ categoryId, onSuccess }: AddCategoryFormProps)
 
   const isEditing = !!categoryId
   const { data: categoryData, isLoading: isFetching } = useGetCategory(categoryId)
-  const createMutation = useCreateCategory(onSuccess)
+  const createMutation = useCreateCategory(() => {
+    form.reset()
+    onSuccess?.()
+  })
   const updateMutation = useUpdateCategory(categoryId || "", onSuccess)
 
   const isLoading = createMutation.isPending || updateMutation.isPending || isFetching

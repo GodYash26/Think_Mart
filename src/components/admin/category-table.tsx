@@ -1,6 +1,4 @@
 import { useState } from "react"
-import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query"
-import { toast } from "sonner"
 import { Trash2, Edit2, Loader2 } from "lucide-react"
 import {
   Table,
@@ -21,9 +19,8 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog"
-import { categoryApi } from "@/lib/api/category"
+import { useCategories, useDeleteCategory } from "@/hooks/categories/useCategories"
 import type { Category } from "@/types/category"
-
 
 interface CategoryTableProps {
   onEdit?: (category: Category) => void
@@ -31,29 +28,15 @@ interface CategoryTableProps {
 
 export function CategoryTable({ onEdit }: CategoryTableProps) {
   const [deleteId, setDeleteId] = useState<string | null>(null)
-  const queryClient = useQueryClient()
-
-  const { data: categories = [], isLoading } = useQuery({
-    queryKey: ["categories"],
-    queryFn: categoryApi.getAll,
-    staleTime: 3 * 60 * 1000, 
-  })
-
-  const deleteMutation = useMutation({
-    mutationFn: (id: string) => categoryApi.delete(id),
-    onSuccess: () => {
-      toast.success("Category deleted successfully!")
-      queryClient.invalidateQueries({ queryKey: ["categories"] })
-      setDeleteId(null)
-    },
-    onError: (error: any) => {
-      toast.error(error.message || "Failed to delete category")
-    },
-  })
+  const { data: categories = [], isLoading } = useCategories()
+  const deleteMutation = useDeleteCategory()
 
   const handleDelete = (id: string) => {
-    deleteMutation.mutate(id)
+    deleteMutation.mutate(id, {
+      onSuccess: () => setDeleteId(null)
+    })
   }
+  
 
   if (isLoading) {
     return (

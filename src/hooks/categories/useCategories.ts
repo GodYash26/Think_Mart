@@ -42,6 +42,23 @@ export function useUpdateCategory(categoryId: string, onSuccess?: () => void) {
   return updateMutation
 }
 
+export function useDeleteCategory() {
+  const queryClient = useQueryClient()
+
+  const deleteMutation = useMutation({
+    mutationFn: (id: string) => categoryApi.delete(id),
+    onSuccess: () => {
+      toast.success("Category deleted successfully!")
+      queryClient.invalidateQueries({ queryKey: ["categories"] })
+    },
+    onError: (error: any) => {
+      toast.error(error.message || "Failed to delete category")
+    },
+  })
+
+  return deleteMutation
+}
+
 export function useGetCategory(categoryId?: string) {
   return useQuery({
     queryKey: ["category", categoryId],
