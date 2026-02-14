@@ -30,7 +30,6 @@ export default function RegisterForm({ initialTab = "signin" }: SignInFormProps)
   const [searchParams] = useSearchParams();
   const [activeTab, setActiveTab] = useState<"signin" | "signup">(initialTab);
 
-  // Get tab from URL parameter (signin or signup)
   useEffect(() => {
     const tabParam = searchParams.get("tab") as "signin" | "signup";
     if (tabParam === "signup" || tabParam === "signin") {

@@ -22,7 +22,6 @@ export default function LoginForm() {
     resolver: zodResolver(loginSchema),
   });
 
-  // Redirect if already authenticated
   useEffect(() => {
     if (isAuthenticated && !isLoading) {
       navigate("/admin/dashboard");

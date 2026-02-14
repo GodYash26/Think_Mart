@@ -58,7 +58,7 @@ export function ProductsTable({
             </TableRow>
           ) : (
             products.map((product) => (
-              <TableRow key={product._id}>
+              <TableRow key={product._id!}>
                 <TableCell>
                   <div className="flex items-center gap-3">
                     {product.imageUrl || product.images ? (
@@ -86,9 +86,9 @@ export function ProductsTable({
                 <TableCell>
                   <Checkbox
                     checked={product.isFeatured ?? false}
-                    disabled={isUpdatingId === product._id}
+                    disabled={isUpdatingId === product._id!}
                     onChange={(event) =>
-                      onStatusChange(product._id, {
+                      onStatusChange(product._id!, {
                         isFeatured: event.target.checked,
                       })
                     }
@@ -98,9 +98,9 @@ export function ProductsTable({
                 <TableCell>
                   <Checkbox
                     checked={product.isOffer ?? false}
-                    disabled={isUpdatingId === product._id}
+                    disabled={isUpdatingId === product._id!}
                     onChange={(event) =>
-                      onStatusChange(product._id, {
+                      onStatusChange(product._id!, {
                         isOffer: event.target.checked,
                       })
                     }
@@ -109,15 +109,15 @@ export function ProductsTable({
                 <TableCell className="text-right">
                   <div className="flex items-center justify-end gap-2">
                     <Button asChild variant="outline" size="sm">
-                      <Link to={`/admin/products/${product._id}`}>View</Link>
+                      <Link to={`/admin/products/${product._id!}`}>View</Link>
                     </Button>
                     <Button
                       variant="destructive"
                       size="sm"
-                      disabled={isDeletingId === product._id}
-                      onClick={() => onDelete(product._id)}
+                      disabled={isDeletingId === product._id!}
+                      onClick={() => onDelete(product._id!)}
                     >
-                      {isDeletingId === product._id ? "Deleting..." : "Delete"}
+                      {isDeletingId === product._id! ? "Deleting..." : "Delete"}
                     </Button>
                   </div>
                 </TableCell>
