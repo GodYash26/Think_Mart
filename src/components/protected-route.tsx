@@ -2,6 +2,7 @@ import type { ReactNode } from "react";
 import { Navigate } from "react-router-dom";
 import { useAuth } from "@/hooks/useAuth";
 import { UserRole } from "@/types/auth";
+import { Button } from "./ui/button";
 
 interface ProtectedRouteProps {
   children: ReactNode;
@@ -46,9 +47,13 @@ export const ProtectedRoute = ({
             <p className="mt-2 text-muted-foreground">
               You don't have permission to access this page.
             </p>
-            <p className="mt-2 text-xs text-gray-400">
-              Your role: {user.role} | Required: {allowedRoles.join(', ')}
-            </p>
+            <Button
+            
+              onClick={() => window.history.back()}
+              className="mt-4 bg-destructive text-white hover:bg-destructive/90"
+            >
+              Go Back
+            </Button>
           </div>
         </div>
       );

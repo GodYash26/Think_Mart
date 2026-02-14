@@ -114,12 +114,16 @@ export function OrderDialog({
           {/* Product Summary */}
           <div className="border rounded-lg p-4 bg-gray-50">
             <div className="flex gap-3 mb-4">
-              {product.image && (
+              {product.image ? (
                 <img
                   src={product.image}
                   alt={product.name}
                   className="w-16 h-16 object-cover rounded"
                 />
+              ) : (
+                <div className="w-16 h-16 bg-gray-300 rounded flex items-center justify-center text-xs text-gray-600">
+                  No Image
+                </div>
               )}
               <div className="flex-1">
                 <h3 className="font-medium">{product.name}</h3>

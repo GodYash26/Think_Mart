@@ -22,11 +22,17 @@ export function CategoryCard({ name, itemCount, image }: CategoryCardProps) {
                     </p>
                 </div>
             </CardHeader>
-            <img
-                src={image}
-                alt={name}
-                className="relative z-20 aspect-video w-full object-cover hover:scale-105 transition-transform duration-300"
-            />
+            {image ? (
+                <img
+                    src={image}
+                    alt={name}
+                    className="relative z-20 aspect-video w-full object-cover hover:scale-105 transition-transform duration-300"
+                />
+            ) : (
+                <div className="relative z-20 aspect-video w-full bg-gray-300 flex items-center justify-center text-sm text-gray-600">
+                    No Image
+                </div>
+            )}
 
 
         </Card>

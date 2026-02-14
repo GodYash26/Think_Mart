@@ -40,7 +40,7 @@ export function PublicProductProfile({ product }: PublicProductProfileProps) {
   const handleQuantityChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value
     setQuantityInput(value)
-    
+
     // Update quantity state if valid
     if (value !== '') {
       const parsed = parseInt(value, 10)
@@ -108,140 +108,143 @@ export function PublicProductProfile({ product }: PublicProductProfileProps) {
           </div>
         </div>
 
-        <div className="space-y-6">
-          <div>
-            <p className="text-sm text-gray-500">{product.categoryName ?? "Category"}</p>
-            <h1 className="text-3xl font-bold text-gray-900">
-              {product.productName}
-            </h1>
-            <p className="mt-3 text-gray-600">
-              {product.description || "No description provided."}
-            </p>
-          </div>
+          <div className="space-y-6">
+            <div>
+              <p className="text-sm text-gray-500">{product.categoryName ?? "Category"}</p>
+              <h1 className="text-3xl font-bold text-gray-900">
+                {product.productName}
+              </h1>
+              <p className="mt-3 text-gray-600">
+                {product.description || "No description provided."}
+              </p>
+            </div>
 
-          <div className="rounded-xl border border-gray-200 bg-white p-5">
-            <div className="space-y-2">
-              <div className="flex items-baseline gap-2">
-                <span className="text-sm text-gray-500">Original Price:</span>
-                <span className="text-sm text-gray-400 line-through font-medium">
-                  ${formatValue(product.originalPrice)}
-                </span>
-              </div>
-              {product.discountedPrice && product.discountedPrice > 0 && (
+            <div className="rounded-xl border border-gray-200 bg-white p-5">
+              <div className="space-y-2">
                 <div className="flex items-baseline gap-2">
-                  <span className="text-sm text-gray-500">Discount:</span>
-                  <span className="text-sm text-red-600 font-medium">
-                    -${product.discountedPrice.toFixed(2)}
+                  <span className="text-sm text-gray-500">Original Price:</span>
+                  <span className="text-sm text-gray-400 line-through font-medium">
+                    ${formatValue(product.originalPrice)}
                   </span>
-                  {product.discountPercentage && product.discountPercentage > 0 && (
-                    <span className="text-xs text-red-600">({product.discountPercentage}% off)</span>
-                  )}
                 </div>
-              )}
-              <div className="flex items-baseline gap-2">
-                <span className="text-sm font-medium text-gray-700">Price After Discount:</span>
-                <span className="text-2xl font-bold text-green-600">
-                  ${priceAfterDiscount.toFixed(2)}
-                </span>
-                <span className="text-sm text-gray-500">
-                  {product.unit ? `/${product.unit}` : ""}
-                </span>
-              </div>
-            </div>
-            <div className="mt-3 text-sm text-gray-500">
-              Delivery: ${formatValue(product.deliveryCharge)}
-            </div>
-          </div>
-
-          <div className="grid grid-cols-2 gap-4 rounded-xl border border-gray-200 bg-white p-5 text-sm">
-            <div>
-              <div className="text-gray-500">Category</div>
-              <div className="font-medium text-gray-900">
-                {product.categoryName ?? product.category}
-              </div>
-            </div>
-            <div>
-              <div className="text-gray-500">Unit</div>
-              <div className="font-medium text-gray-900">
-                {product.unit}
-              </div>
-            </div>
-            <div>
-              <div className="text-gray-500">Stock</div>
-              <div className="font-medium text-gray-900">
-                {formatValue(product.remainingStock ?? product.totalStock)}
-              </div>
-            </div>
-            <div>
-              <div className="text-gray-500">Status</div>
-              <div className="font-medium text-gray-900">
-                {product.isActive === false ? "Inactive" : "Available"}
-              </div>
-            </div>
-          </div>
-
-          {/* Quantity and Order Button */}
-          <div className="rounded-xl border border-gray-200 bg-white p-5 space-y-4">
-            <div>
-              <label className="text-sm font-medium text-gray-700 mb-2 block">Quantity</label>
-              <div className="flex items-center gap-3">
-                <div className="flex items-center border border-gray-200 rounded-lg overflow-hidden">
-                  <Button
-                    onClick={handleDecrement}
-                    className="h-10 w-10 flex items-center justify-center bg-white hover:bg-gray-50 transition-colors"
-                    aria-label="Decrease quantity"
-                  >
-                    <Minus className="w-4 h-4 text-gray-600" />
-                  </Button>
-                  <Input
-                    value={quantityInput}
-                    onChange={handleQuantityChange}
-                    onBlur={handleQuantityBlur}
-                    className="w-16 h-10 text-center text-base font-medium focus:outline-none shadow-none border-none"
-                    min="1"
-                    type="number"
-                  />
-                  <Button
-                    onClick={handleIncrement}
-                    className="h-10 w-10 flex items-center justify-center bg-white hover:bg-gray-50 transition-colors"
-                    aria-label="Increase quantity"
-                  >
-                    <Plus className="w-4 h-4 text-gray-600" />
-                  </Button>
-                </div>
-                <span className="text-sm text-gray-600">
-                  Total: ${(priceAfterDiscount * quantity).toFixed(2)}
-                </span>
-              </div>
-            </div>
-            <div className="space-y-3">
-              <Button
-                onClick={handleAddToCart}
-                disabled={isAddingToCart}
-                className="w-full bg-blue-600 hover:bg-blue-700 text-white h-12 text-base"
-              >
-                {isAddingToCart ? (
-                  <>
-                    <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin mr-2" />
-                    Adding...
-                  </>
-                ) : (
-                  <>
-                    <ShoppingCart className="w-5 h-5 mr-2" />
-                    Add to Cart
-                  </>
+                {product.discountedPrice && product.discountedPrice > 0 && (
+                  <div className="flex items-baseline gap-2">
+                    <span className="text-sm text-gray-500">Discount:</span>
+                    <span className="text-sm text-red-600 font-medium">
+                      -${product.discountedPrice.toFixed(2)}
+                    </span>
+                    {product.discountPercentage && product.discountPercentage > 0 && (
+                      <span className="text-xs text-red-600">({product.discountPercentage}% off)</span>
+                    )}
+                  </div>
                 )}
-              </Button>
-              <Button
-                onClick={handleOrderNow}
-                className="w-full bg-green-600 hover:bg-green-700 text-white h-12 text-lg"
-              >
-                <ShoppingBag className="w-5 h-5 mr-2" />
-                {user ? 'Order Now' : 'Login to Order'}
-              </Button>
+                <div className="flex items-baseline gap-2">
+                  <span className="text-sm font-medium text-gray-700">Price After Discount:</span>
+                  <span className="text-2xl font-bold text-green-600">
+                    ${priceAfterDiscount.toFixed(2)}
+                  </span>
+                  <span className="text-sm text-gray-500">
+                    {product.unit ? `/${product.unit}` : ""}
+                  </span>
+                </div>
+              </div>
+              <div className="mt-3 text-sm text-gray-500">
+                Delivery: ${formatValue(product.deliveryCharge)}
+              </div>
             </div>
+
+            <div className="grid grid-cols-2 gap-4 rounded-xl border border-gray-200 bg-white p-5 text-sm">
+              <div>
+                <div className="text-gray-500">Category</div>
+                <div className="font-medium text-gray-900">
+                  {product.categoryName ?? product.category}
+                </div>
+              </div>
+              <div>
+                <div className="text-gray-500">Unit</div>
+                <div className="font-medium text-gray-900">
+                  {product.unit}
+                </div>
+              </div>
+              <div>
+                <div className="text-gray-500">Stock</div>
+                <div className="font-medium text-gray-900">
+                  {formatValue(product.remainingStock ?? product.totalStock)}
+                </div>
+              </div>
+              <div>
+                <div className="text-gray-500">Status</div>
+                <div className="font-medium text-gray-900">
+                  {product.isActive === false ? "Inactive" : "Available"}
+                </div>
+              </div>
+            </div>
+
+            {/* Quantity and Order Button */}
+        {user?.role !== "admin" && (
+            <div className="rounded-xl border border-gray-200 bg-white p-5 space-y-4">
+              <div>
+                <label className="text-sm font-medium text-gray-700 mb-2 block">Quantity</label>
+                <div className="flex items-center gap-3">
+                  <div className="flex items-center border border-gray-200 rounded-lg overflow-hidden">
+                    <Button
+                      onClick={handleDecrement}
+                      className="h-10 w-10 flex items-center justify-center bg-white hover:bg-gray-50 transition-colors"
+                      aria-label="Decrease quantity"
+                    >
+                      <Minus className="w-4 h-4 text-gray-600" />
+                    </Button>
+                    <Input
+                      value={quantityInput}
+                      onChange={handleQuantityChange}
+                      onBlur={handleQuantityBlur}
+                      className="w-16 h-10 text-center text-base font-medium focus:outline-none shadow-none border-none"
+                      min="1"
+                      type="number"
+                    />
+                    <Button
+                      onClick={handleIncrement}
+                      className="h-10 w-10 flex items-center justify-center bg-white hover:bg-gray-50 transition-colors"
+                      aria-label="Increase quantity"
+                    >
+                      <Plus className="w-4 h-4 text-gray-600" />
+                    </Button>
+                  </div>
+                  <span className="text-sm text-gray-600">
+                    Total: ${(priceAfterDiscount * quantity).toFixed(2)}
+                  </span>
+                </div>
+              </div>
+              <div className="space-y-3">
+                <Button
+                  onClick={handleAddToCart}
+                  disabled={isAddingToCart}
+                  className="w-full bg-blue-600 hover:bg-blue-700 text-white h-12 text-base"
+                >
+                  {isAddingToCart ? (
+                    <>
+                      <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin mr-2" />
+                      Adding...
+                    </>
+                  ) : (
+                    <>
+                      <ShoppingCart className="w-5 h-5 mr-2" />
+                      Add to Cart
+                    </>
+                  )}
+                </Button>
+
+                <Button
+                  onClick={handleOrderNow}
+                  className="w-full bg-green-600 hover:bg-green-700 text-white h-12 text-lg"
+                >
+                  <ShoppingBag className="w-5 h-5 mr-2" />
+                  {user ? 'Order Now' : 'Login to Order'}
+                </Button>
+              </div>
+            </div>
+          )}
           </div>
-        </div>
       </div>
 
       {/* Reviews and Comments Section */}
@@ -250,7 +253,7 @@ export function PublicProductProfile({ product }: PublicProductProfileProps) {
         <Card>
           <CardContent className="p-6">
             <h2 className="text-2xl font-bold text-gray-900 mb-6">Customer Reviews</h2>
-            
+
             {/* Average Rating */}
             <div className="flex items-center gap-4 mb-6 pb-6 border-b">
               <div className="text-center">
@@ -259,9 +262,8 @@ export function PublicProductProfile({ product }: PublicProductProfileProps) {
                   {[1, 2, 3, 4, 5].map((star) => (
                     <Star
                       key={star}
-                      className={`w-4 h-4 ${
-                        star <= 4.5 ? 'fill-yellow-400 text-yellow-400' : 'text-gray-300'
-                      }`}
+                      className={`w-4 h-4 ${star <= 4.5 ? 'fill-yellow-400 text-yellow-400' : 'text-gray-300'
+                        }`}
                     />
                   ))}
                 </div>
@@ -368,7 +370,7 @@ export function PublicProductProfile({ product }: PublicProductProfileProps) {
         <Card>
           <CardContent className="p-6">
             <h2 className="text-2xl font-bold text-gray-900 mb-6">Comments</h2>
-            
+
             <div className="space-y-6">
               <div className="border-b pb-6">
                 <div className="flex items-start gap-3">

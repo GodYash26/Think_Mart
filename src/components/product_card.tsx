@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { Heart, ShoppingCart, Minus, Plus, ShoppingBag } from "lucide-react";
+import { Heart, ShoppingCart, Minus, Plus, } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { useState } from "react";
@@ -59,7 +59,7 @@ export function ProductCard({
     const handleQuantityChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const value = e.target.value;
         setQuantityInput(value);
-        
+
         // Update quantity state if valid
         if (value !== '') {
             const parsed = parseInt(value, 10);
@@ -109,14 +109,6 @@ export function ProductCard({
         onToggleFavorite?.(newFavoriteState);
     };
 
-    const handleOrderNow = () => {
-        if (!user) {
-            openAuthSheet("signin");
-            return;
-        }
-        setOrderDialogOpen(true);
-    };
-
     return (
         <>
             <Card className="relative overflow-hidden border-gray-200 hover:shadow-md transition-shadow duration-300 group">
@@ -143,21 +135,27 @@ export function ProductCard({
 
                 <CardContent className="p-0">
                     {/* Product Image */}
-                    <div className="relative flex items-center justify-center h-36 pt-2">
-                        {href ? (
-                            <Link to={href} className="block w-full h-full">
+                    <div className="relative flex items-center justify-center h-36 pt-2 bg-gray-10">
+                        {image ? (
+                            href ? (
+                                <Link to={href} className="block w-full h-full">
+                                    <img
+                                        src={image}
+                                        alt={name}
+                                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                                    />
+                                </Link>
+                            ) : (
                                 <img
                                     src={image}
                                     alt={name}
                                     className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
                                 />
-                            </Link>
+                            )
                         ) : (
-                            <img
-                                src={image}
-                                alt={name}
-                                className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
-                            />
+                            <div className="w-full h-full flex items-center justify-center bg-gray-300 text-gray-500 text-sm">
+                                No Image
+                            </div>
                         )}
                     </div>
 
@@ -178,7 +176,7 @@ export function ProductCard({
                                     ${originalPrice.toFixed(2)}
                                 </span>
                             </div>
-                            
+
                             <div className="flex items-baseline gap-2 mb-1">
                                 <span className="text-lg font-bold text-green-600">
                                     ${(originalPrice - (discountedPrice || 0)).toFixed(2)}
@@ -236,16 +234,7 @@ export function ProductCard({
                                 </Button>
                             </div>
 
-                            {/* Order Now Button */}
-                            {_id && (
-                                <Button
-                                    onClick={handleOrderNow}
-                                    className="w-full bg-orange-500 hover:bg-orange-600 text-white"
-                                >
-                                    <ShoppingBag className="w-4 h-4 mr-2" />
-                                    {user ? 'Order Now' : 'Login to Order'}
-                                </Button>
-                            )}
+                            
                         </div>
                     </div>
                 </CardContent>
