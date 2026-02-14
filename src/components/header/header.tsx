@@ -47,7 +47,7 @@ const Header: React.FC = () => {
                 <div className="flex shrink-0 items-center justify-end gap-2">
                     <DropdownMenu>
                         <DropdownMenuTrigger asChild>
-                            <Button className="relative h-12 w-12 bg-gray-200 text-gray-500 hover:bg-gray-300">
+                            <Button className="relative h-12 w-12 bg-gray-20 text-gray-500 hover:bg-gray-100">
                                 <ShoppingCart strokeWidth={3} />
                                 {cartCount > 0 && (
                                     <span className="absolute -top-1 -right-1 bg-[#76BA2C] text-white text-[10px] font-bold w-5 h-5 rounded-full flex items-center justify-center">
@@ -75,7 +75,7 @@ const Header: React.FC = () => {
 
                     <DropdownMenu>
                         <DropdownMenuTrigger asChild>
-                            <Button className="h-12 w-12 bg-gray-200 text-gray-500 hover:bg-gray-300">
+                            <Button className="h-12 w-12 bg-gray-20 text-gray-500 hover:bg-gray-100">
                                 <Heart size={28} strokeWidth={2.5} />
                             </Button>
                         </DropdownMenuTrigger>
@@ -92,7 +92,7 @@ const Header: React.FC = () => {
                             <Button className={`h-12 w-12 font-bold text-lg ${
                                 isAuthenticated && user
                                     ? "bg-[#76BA2C] text-white hover:bg-[#65a524]"
-                                    : "bg-gray-200 text-gray-500 hover:bg-gray-300"
+                                    : "bg-gray-20 text-gray-500 hover:bg-gray-100"
                             }`}>
                                 {isAuthenticated && user ? (
                                     getInitials(user.fullname)
@@ -102,7 +102,7 @@ const Header: React.FC = () => {
                             </Button>
                         </DropdownMenuTrigger>
                         <DropdownMenuContent align="end" className="w-64">
-                            {/* Authenticated User - Show Profile Menu */}
+                            {/* Authenticated User */}
                             {isAuthenticated && user ? (
                                 <div className="p-4 space-y-3">
                                     <div className="border-b pb-3">
@@ -153,7 +153,6 @@ const Header: React.FC = () => {
                                     </div>
                                 </div>
                             ) : (
-                                /* Unauthenticated User - Show Login and Signup Buttons */
                                 <div className="p-4 space-y-2">
                                     <Button 
                                         className="w-full border-[#76BA2C] text-[#76BA2C] hover:bg-[#76BA2C] hover:text-white"
