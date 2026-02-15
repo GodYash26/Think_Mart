@@ -113,15 +113,10 @@ ADMIN_EMAIL=admin@thinkmart.com
 ADMIN_PASSWORD=Admin@123456
 
 # ImageKit Configuration (required for image uploads)
-IMAGEKIT_PUBLIC_KEY=your_imagekit_public_key
+<!-- IMAGEKIT_PUBLIC_KEY=your_imagekit_public_key
 IMAGEKIT_PRIVATE_KEY=your_imagekit_private_key
-IMAGEKIT_URL_ENDPOINT=https://ik.imagekit.io/your_imagekit_id
+IMAGEKIT_URL_ENDPOINT=https://ik.imagekit.io/your_imagekit_id -->
 ```
-
-#### 📝 Getting ImageKit Credentials:
-1. Sign up at [ImageKit.io](https://imagekit.io/)
-2. Go to Developer Options in your dashboard
-3. Copy Public Key, Private Key, and URL Endpoint
 
 ### 4. Seed Admin User
 ```bash

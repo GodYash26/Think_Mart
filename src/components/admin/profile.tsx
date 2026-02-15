@@ -19,7 +19,8 @@ export default function Profile() {
     retry: 1,
   });
 
-  const getInitials = (name: string) => {
+  const getInitials = (name?: string) => {
+    if (!name) return "NA";
     return name
       .split(" ")
       .map((n) => n[0])
@@ -103,7 +104,7 @@ export default function Profile() {
               </AvatarFallback>
             </Avatar>
             <div className="space-y-2">
-              <h2 className="text-2xl font-semibold">{user.fullname}</h2>
+              <h2 className="text-2xl font-semibold">{user.fullname || "N/A"}</h2>
               <Badge
                 variant={user.role === "admin" ? "default" : "secondary"}
                 className={
@@ -126,7 +127,33 @@ export default function Profile() {
                 <p className="text-xs text-muted-foreground uppercase tracking-wide">
                   Email Address
                 </p>
-                <p className="text-sm font-medium text-foreground">{user.email}</p>
+                <p className="text-sm font-medium text-foreground">
+                  {user.email || "N/A"}
+                </p>
+              </div>
+            </div>
+
+            <div className="flex items-center gap-3 text-muted-foreground">
+              <Shield className="h-5 w-5" />
+              <div>
+                <p className="text-xs text-muted-foreground uppercase tracking-wide">
+                  Phone Number
+                </p>
+                <p className="text-sm font-medium text-foreground">
+                  {(user as any)?.phone || "N/A"}
+                </p>
+              </div>
+            </div>
+
+            <div className="flex items-center gap-3 text-muted-foreground">
+              <Shield className="h-5 w-5" />
+              <div>
+                <p className="text-xs text-muted-foreground uppercase tracking-wide">
+                  Address
+                </p>
+                <p className="text-sm font-medium text-foreground">
+                  {(user as any)?.address || "N/A"}
+                </p>
               </div>
             </div>
 
@@ -142,19 +169,17 @@ export default function Profile() {
               </div>
             </div>
 
-            {user.createdAt && (
-              <div className="flex items-center gap-3 text-muted-foreground">
-                <Calendar className="h-5 w-5" />
-                <div>
-                  <p className="text-xs text-muted-foreground uppercase tracking-wide">
-                    Created At
-                  </p>
-                  <p className="text-sm font-medium text-foreground">
-                    {formatDate(user.createdAt)}
-                  </p>
-                </div>
+            <div className="flex items-center gap-3 text-muted-foreground">
+              <Calendar className="h-5 w-5" />
+              <div>
+                <p className="text-xs text-muted-foreground uppercase tracking-wide">
+                  Created At
+                </p>
+                <p className="text-sm font-medium text-foreground">
+                  {formatDate(user.createdAt)}
+                </p>
               </div>
-            )}
+            </div>
           </div>
         </CardContent>
       </Card>
